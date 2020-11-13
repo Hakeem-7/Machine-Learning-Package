@@ -16,3 +16,7 @@ Description: This is a package for performing linear regressions and also associ
 License: use_mit_license()
 Encoding: UTF-8
 LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
