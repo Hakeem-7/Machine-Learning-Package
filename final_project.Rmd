@@ -44,10 +44,11 @@ my_lm = function(response, covariates, alpha, method) {
   
   # Check to see if alpha is between 0 and 1
   if(alpha >= 1 | alpha <= 0) 
-    stop('True value of alpha must be between 0 and 1')
+    stop('True value of alpha must lie between 0 and 1')
   
-  # Produce a warning if alpha is greater than 0.2
-  if(alpha > 0.2) warning('Alpha is typically between 0.001 and 0.2. Consider using a different alpha value.')
+  # Produce a warning if alpha is greater than 0.1 (i.e is lower than 90% confidence interval)
+  if(alpha > 0.1) 
+    warning('Alpha is typically between 0.01 and 0.1. Consider using a different alpha value')
   
   # Check to see if appropriate method has been listed
   if(method != "asymptotic" & method != "bootstrap") 
