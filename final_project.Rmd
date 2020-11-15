@@ -27,6 +27,7 @@ if (!require("gamair")) {
 
 
 ## Linear Regression
+
 ```{r linear_regression, error=TRUE}
 
 # Example dataset from textbook, but we can change this
@@ -56,14 +57,15 @@ my_lm = function(response, covariates, alpha, method) {
   
   # Define parameters
   n <- length(response)
-  p <- dim(covariates)[2]
-  df <- n - p
+  p <- dim(covariates)[2] # Column of the parameters/predictors
+  df <- n - p # degree of freedom
   
   # Calculate statistics
   beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
   resid <- response - covariates%*%as.matrix(beta.hat) 
   sigma2.hat <- (1/df)*t(resid)%*%resid
   var.beta <- sigma2.hat*solve(t(covariates)%*%covariates)
+  
   
   # Defining parameter for confidence interval based on specified alpha
   quant <- 1 - alpha/2
@@ -101,6 +103,27 @@ fit_my_lm2
 fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
 fit_my_lm3
 
+# Using standard lm package
+fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
+
+
 ```
 
+
+```{r Performance Comparison}
+
+# Comparing the output of our lm function with the base package
+
+base_result = c(fit_lm$coefficients, 
+                 (1/fit_lm$df.residual)*t(fit_lm$residuals)%*%fit_lm$residuals)
+
+manual_result_bootstrap = c(fit_my_lm$beta, fit_my_lm$sigma2)
+
+manual_result_asymptotic = c(fit_my_lm2$beta, fit_my_lm2$sigma2)
+
+result = cbind(base_result, manual_result_asymptotic, manual_result_bootstrap)
+row.names(result) = c("Beta", "Sigma")
+result
+
+```
 
