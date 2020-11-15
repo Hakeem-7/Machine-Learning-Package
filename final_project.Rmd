@@ -1,0 +1,101 @@
+---
+title: "Final Project, Group 5, STAT 6210"
+author: "Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Tereza Bethonico Terra"
+date: "12/04/2020"
+output: html_document
+---
+Repository: [Final_Project_Group_5](https://github.com/AU-R-Programming/Final_Project_Group_5)
+\
+\
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Packages
+<div class="alert alert-warning">
+  <strong>This will be used to install any packages needed for code. Currently, the only package needed is for accessing a sample dataset. To remove all dependencies on outside packages, we may want to create our own dataset.
+</div>
+```{r trueinstall, message=FALSE, warning=FALSE}
+
+# Installing any necessary packages
+if (!require("gamair")) {
+    install.packages("gamair")
+    library(ggplot2)
+}
+
+```
+
+
+## Linear Regression
+```{r linear_regression, error=TRUE}
+
+# Example dataset from textbook, but we can change this
+data(hubble)
+
+my_lm = function(response, covariates, alpha, method) {
+  
+  response <- as.matrix(response)
+  covariates <- as.matrix(covariates)
+  
+  # Check to see if they are of the same row length
+  if(nrow(response) != nrow(covariates)) stop('The number of rows of the response and predictor variables must be equal.')
+  
+  # Check to see if alpha is between 0 and 1
+  if(alpha >= 1 | alpha <= 0) stop('Alpha must be between 0 and 1 (not inclusive) to create appropriate confidence intervals.')
+  
+  # Produce a warning if alpha is greater than 0.2
+  if(alpha > 0.2) warning('Alpha is typically between 0.001 and 0.2. Consider using a different alpha value.')
+  
+  # Check to see if appropriate method has been listed
+  if(method != "asymptotic" & method != "bootstrap") stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
+  
+  # Define parameters
+  n <- length(response)
+  p <- dim(covariates)[2]
+  df <- n - p
+  
+  # Calculate statistics
+  beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
+  resid <- response - covariates%*%as.matrix(beta.hat) 
+  sigma2.hat <- (1/df)*t(resid)%*%resid
+  var.beta <- sigma2.hat*solve(t(covariates)%*%covariates)
+  
+  # Defining parameter for confidence interval based on specified alpha
+  quant <- 1 - alpha/2
+  
+  # Change CI calculation based on specified method
+  if(method == "asymptotic"){
+    ci.beta <- c(beta.hat - qnorm(p = quant)*sqrt(var.beta), beta.hat + 
+                   qnorm(p = quant)*sqrt(var.beta))
+  } else{
+    data <- cbind(response, covariates)
+    i = 1
+    beta.hats <- NULL
+    while(i<=1000){
+      size <- sample(2:nrow(data), 1)
+      boot.data <- data[sample(nrow(data),size=size,replace=TRUE),]
+      beta.hat.boot <- solve(t(boot.data[,2])%*%boot.data[,2])%*%t(boot.data[,2])%*%boot.data[,1]
+      beta.hats <- append(beta.hats, beta.hat.boot)
+      i <- i+1
+    }
+    ci.beta <- quantile(beta.hats, c(alpha/2, 1-(alpha/2))) 
+  }
+  return(list(beta = beta.hat, sigma2 = sigma2.hat, 
+              variance_beta = var.beta, ci = ci.beta))
+}
+
+# Bootstrap CI method
+fit_my_lm = my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
+fit_my_lm
+
+# Asymptotic CI method
+fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
+fit_my_lm2
+
+# Showing off an error message
+fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
+fit_my_lm3
+
+```
+
+
