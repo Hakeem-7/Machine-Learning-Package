@@ -391,31 +391,45 @@ data(hubble)
 
 my_lm = function(response, covariates, alpha, method) {
   
+  # Putting the data in a matrix format
   response &lt;- as.matrix(response)
   covariates &lt;- as.matrix(covariates)
   
   # Check to see if they are of the same row length
-  if(nrow(response) != nrow(covariates)) stop(&#39;The number of rows of the response and predictor variables must be equal.&#39;)
+  if(nrow(response) != nrow(covariates)) 
+    stop(&#39;The number of rows of the response and predictor variables must be equal.&#39;)
   
   # Check to see if alpha is between 0 and 1
-  if(alpha &gt;= 1 | alpha &lt;= 0) stop(&#39;Alpha must be between 0 and 1 (not inclusive) to create appropriate confidence intervals.&#39;)
+  if(alpha &gt;= 1 | alpha &lt;= 0) 
+    stop(&#39;True value of alpha must lie between 0 and 1&#39;)
   
-  # Produce a warning if alpha is greater than 0.2
-  if(alpha &gt; 0.2) warning(&#39;Alpha is typically between 0.001 and 0.2. Consider using a different alpha value.&#39;)
+  # Produce a warning if alpha is greater than 0.1 (i.e is lower than 90% confidence interval)
+  if(alpha &gt; 0.1) 
+    warning(&#39;Alpha is typically between 0.01 and 0.1. Consider using a different alpha value&#39;)
   
   # Check to see if appropriate method has been listed
-  if(method != &quot;asymptotic&quot; &amp; method != &quot;bootstrap&quot;) stop(&#39;Unrecognized confidence interval method. Try &quot;asymptotic&quot; or &quot;bootstrap&quot;.&#39;)
+  if(method != &quot;asymptotic&quot; &amp; method != &quot;bootstrap&quot;) 
+    stop(&#39;Unrecognized confidence interval method. Try &quot;asymptotic&quot; or &quot;bootstrap&quot;.&#39;)
   
   # Define parameters
   n &lt;- length(response)
-  p &lt;- dim(covariates)[2]
-  df &lt;- n - p
+  p &lt;- dim(covariates)[2] # Column of the parameters/predictors
+  df &lt;- n - p # degree of freedom
+  dfm &lt;- p
+  dfe &lt;- n - p - 1
   
   # Calculate statistics
   beta.hat &lt;- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
   resid &lt;- response - covariates%*%as.matrix(beta.hat) 
   sigma2.hat &lt;- (1/df)*t(resid)%*%resid
   var.beta &lt;- sigma2.hat*solve(t(covariates)%*%covariates)
+  y.hat &lt;- covariates%*%beta.hat
+  mspe &lt;- (sum((response - y.hat)^2))/n
+  ssm &lt;- sum((y.hat - mean(response))^2)
+  sse &lt;- sum((response - y.hat)^2)
+  msm &lt;- ssm/dfm
+  mse &lt;- sse/dfe
+  f.stat &lt;- msm/mse
   
   # Defining parameter for confidence interval based on specified alpha
   quant &lt;- 1 - alpha/2
@@ -438,7 +452,8 @@ my_lm = function(response, covariates, alpha, method) {
     ci.beta &lt;- quantile(beta.hats, c(alpha/2, 1-(alpha/2))) 
   }
   return(list(beta = beta.hat, sigma2 = sigma2.hat, 
-              variance_beta = var.beta, ci = ci.beta))
+              variance_beta = var.beta, ci = ci.beta,
+              mspe = mspe, ssm = ssm, sse = sse, f.stat = f.stat))
 }
 
 # Bootstrap CI method
@@ -458,7 +473,19 @@ fit_my_lm</code></pre>
 ## 
 ## $ci
 ##     2.5%    97.5% 
-## 61.67089 91.96280</code></pre>
+## 60.35366 92.86916 
+## 
+## $mspe
+## [1] 64252.73
+## 
+## $ssm
+## [1] 4560602
+## 
+## $sse
+## [1] 1542066
+## 
+## $f.stat
+## [1] 65.06419</code></pre>
 <pre class="r"><code># Asymptotic CI method
 fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, &quot;asymptotic&quot;)
 fit_my_lm2</code></pre>
@@ -475,12 +502,41 @@ fit_my_lm2</code></pre>
 ## [1,] 15.71959
 ## 
 ## $ci
-## [1] 68.81032 84.35203</code></pre>
+## [1] 68.81032 84.35203
+## 
+## $mspe
+## [1] 64252.73
+## 
+## $ssm
+## [1] 4560602
+## 
+## $sse
+## [1] 1542066
+## 
+## $f.stat
+## [1] 65.06419</code></pre>
 <pre class="r"><code># Showing off an error message
 fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, &quot;asymptotic&quot;)</code></pre>
-<pre><code>## Error in my_lm(hubble$y, hubble$x, 2, &quot;asymptotic&quot;): Alpha must be between 0 and 1 (not inclusive) to create appropriate confidence intervals.</code></pre>
+<pre><code>## Error in my_lm(hubble$y, hubble$x, 2, &quot;asymptotic&quot;): True value of alpha must lie between 0 and 1</code></pre>
 <pre class="r"><code>fit_my_lm3</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;fit_my_lm3&#39; not found</code></pre>
+<pre class="r"><code># Using standard lm package
+fit_lm &lt;- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept</code></pre>
+<pre class="r"><code># Comparing the output of our lm function with the base package
+
+base_result = c(fit_lm$coefficients, 
+                 (1/fit_lm$df.residual)*t(fit_lm$residuals)%*%fit_lm$residuals)
+
+manual_result_bootstrap = c(fit_my_lm$beta, fit_my_lm$sigma2)
+
+manual_result_asymptotic = c(fit_my_lm2$beta, fit_my_lm2$sigma2)
+
+result = cbind(base_result, manual_result_asymptotic, manual_result_bootstrap)
+row.names(result) = c(&quot;Beta&quot;, &quot;Sigma&quot;)
+result</code></pre>
+<pre><code>##       base_result manual_result_asymptotic manual_result_bootstrap
+## Beta     76.58117                 76.58117                76.58117
+## Sigma 67046.33165              67046.33165             67046.33165</code></pre>
 </div>
 
 
