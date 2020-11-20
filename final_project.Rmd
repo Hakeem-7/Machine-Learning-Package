@@ -60,7 +60,7 @@ my_lm = function(response, covariates, alpha, method) {
   p <- dim(covariates)[2] # Column of the parameters/predictors
   df <- n - p # degree of freedom
   dfm <- p
-  dfe <- n - p - 1
+  dfe <- n - p
   
   # Calculate statistics
   beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response

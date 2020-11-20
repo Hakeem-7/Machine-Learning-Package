@@ -416,7 +416,7 @@ my_lm = function(response, covariates, alpha, method) {
   p &lt;- dim(covariates)[2] # Column of the parameters/predictors
   df &lt;- n - p # degree of freedom
   dfm &lt;- p
-  dfe &lt;- n - p - 1
+  dfe &lt;- n - p
   
   # Calculate statistics
   beta.hat &lt;- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
@@ -473,7 +473,7 @@ fit_my_lm</code></pre>
 ## 
 ## $ci
 ##     2.5%    97.5% 
-## 60.35366 92.86916 
+## 60.13311 92.38268 
 ## 
 ## $mspe
 ## [1] 64252.73
@@ -485,7 +485,7 @@ fit_my_lm</code></pre>
 ## [1] 1542066
 ## 
 ## $f.stat
-## [1] 65.06419</code></pre>
+## [1] 68.02166</code></pre>
 <pre class="r"><code># Asymptotic CI method
 fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, &quot;asymptotic&quot;)
 fit_my_lm2</code></pre>
@@ -514,7 +514,7 @@ fit_my_lm2</code></pre>
 ## [1] 1542066
 ## 
 ## $f.stat
-## [1] 65.06419</code></pre>
+## [1] 68.02166</code></pre>
 <pre class="r"><code># Showing off an error message
 fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, &quot;asymptotic&quot;)</code></pre>
 <pre><code>## Error in my_lm(hubble$y, hubble$x, 2, &quot;asymptotic&quot;): True value of alpha must lie between 0 and 1</code></pre>
