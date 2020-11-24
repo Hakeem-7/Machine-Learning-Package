@@ -60,7 +60,9 @@ my_lm = function(response, covariates, alpha, method) {
   p <- dim(covariates)[2] # Column of the parameters/predictors
   df <- n - p # degree of freedom
   dfm <- p
-  dfe <- n - p - 1
+  dfe <- n - p
+  j <- matrix(1, nrow=n, ncol=n) #nxn matrix of ones for calculating ssm
+  int <- rep(1, length(response)) #vector of length n for intercept
   
   # Calculate statistics
   beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
@@ -69,8 +71,8 @@ my_lm = function(response, covariates, alpha, method) {
   var.beta <- sigma2.hat*solve(t(covariates)%*%covariates)
   y.hat <- covariates%*%beta.hat
   mspe <- (sum((response - y.hat)^2))/n
-  ssm <- sum((y.hat - mean(response))^2)
-  sse <- sum((response - y.hat)^2)
+  ssm <- (t(beta.hat)%*%t(covariates)%*%response)-(t(response)%*%j%*%response)/n
+  sse <- (t(response)%*%response)-(t(beta.hat)%*%t(covariates)%*%response)
   msm <- ssm/dfm
   mse <- sse/dfe
   f.stat <- msm/mse
@@ -87,8 +89,7 @@ my_lm = function(response, covariates, alpha, method) {
     i = 1
     beta.hats <- NULL
     while(i<=1000){
-      size <- sample(2:nrow(data), 1)
-      boot.data <- data[sample(nrow(data),size=size,replace=TRUE),]
+      boot.data <- data[sample(nrow(data),size=n,replace=TRUE),]
       beta.hat.boot <- solve(t(boot.data[,2])%*%boot.data[,2])%*%t(boot.data[,2])%*%boot.data[,1]
       beta.hats <- append(beta.hats, beta.hat.boot)
       i <- i+1

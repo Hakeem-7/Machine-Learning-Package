@@ -416,7 +416,9 @@ my_lm = function(response, covariates, alpha, method) {
   p &lt;- dim(covariates)[2] # Column of the parameters/predictors
   df &lt;- n - p # degree of freedom
   dfm &lt;- p
-  dfe &lt;- n - p - 1
+  dfe &lt;- n - p
+  j &lt;- matrix(1, nrow=n, ncol=n) #nxn matrix of ones for calculating ssm
+  int &lt;- rep(1, length(response)) #vector of length n for intercept
   
   # Calculate statistics
   beta.hat &lt;- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
@@ -425,8 +427,8 @@ my_lm = function(response, covariates, alpha, method) {
   var.beta &lt;- sigma2.hat*solve(t(covariates)%*%covariates)
   y.hat &lt;- covariates%*%beta.hat
   mspe &lt;- (sum((response - y.hat)^2))/n
-  ssm &lt;- sum((y.hat - mean(response))^2)
-  sse &lt;- sum((response - y.hat)^2)
+  ssm &lt;- (t(beta.hat)%*%t(covariates)%*%response)-(t(response)%*%j%*%response)/n
+  sse &lt;- (t(response)%*%response)-(t(beta.hat)%*%t(covariates)%*%response)
   msm &lt;- ssm/dfm
   mse &lt;- sse/dfe
   f.stat &lt;- msm/mse
@@ -443,8 +445,7 @@ my_lm = function(response, covariates, alpha, method) {
     i = 1
     beta.hats &lt;- NULL
     while(i&lt;=1000){
-      size &lt;- sample(2:nrow(data), 1)
-      boot.data &lt;- data[sample(nrow(data),size=size,replace=TRUE),]
+      boot.data &lt;- data[sample(nrow(data),size=n,replace=TRUE),]
       beta.hat.boot &lt;- solve(t(boot.data[,2])%*%boot.data[,2])%*%t(boot.data[,2])%*%boot.data[,1]
       beta.hats &lt;- append(beta.hats, beta.hat.boot)
       i &lt;- i+1
@@ -473,19 +474,22 @@ fit_my_lm</code></pre>
 ## 
 ## $ci
 ##     2.5%    97.5% 
-## 60.35366 92.86916 
+## 66.66488 86.30702 
 ## 
 ## $mspe
 ## [1] 64252.73
 ## 
 ## $ssm
-## [1] 4560602
+##         [,1]
+## [1,] 4506432
 ## 
 ## $sse
-## [1] 1542066
+##         [,1]
+## [1,] 1542066
 ## 
 ## $f.stat
-## [1] 65.06419</code></pre>
+##         [,1]
+## [1,] 67.2137</code></pre>
 <pre class="r"><code># Asymptotic CI method
 fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, &quot;asymptotic&quot;)
 fit_my_lm2</code></pre>
@@ -508,13 +512,16 @@ fit_my_lm2</code></pre>
 ## [1] 64252.73
 ## 
 ## $ssm
-## [1] 4560602
+##         [,1]
+## [1,] 4506432
 ## 
 ## $sse
-## [1] 1542066
+##         [,1]
+## [1,] 1542066
 ## 
 ## $f.stat
-## [1] 65.06419</code></pre>
+##         [,1]
+## [1,] 67.2137</code></pre>
 <pre class="r"><code># Showing off an error message
 fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, &quot;asymptotic&quot;)</code></pre>
 <pre><code>## Error in my_lm(hubble$y, hubble$x, 2, &quot;asymptotic&quot;): True value of alpha must lie between 0 and 1</code></pre>
