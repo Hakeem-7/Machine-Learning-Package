@@ -73,15 +73,14 @@ fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 fit_my_lm2
 
 # Showing off an error message
-fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
-fit_my_lm3
+
 
 # Using standard lm package
 fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
 
 
 
-plot(fit_my_lm2$)
+
 
 
 

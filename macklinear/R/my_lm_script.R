@@ -1,9 +1,3 @@
-
-## Packages
-<div class="alert alert-warning">
-  <strong>This will be used to install any packages needed for code. Currently, the only package needed is for accessing a sample dataset. To remove all dependencies on outside packages, we may want to create our own dataset.
-</div>
-
 # Installing any necessary packages
 if (!require("gamair")) {
   install.packages("gamair")
@@ -13,32 +7,36 @@ if (!require("gamair")) {
 ## Linear Regression
 
 # Example dataset from textbook, but we can change this
+library(gamair)
 data(hubble)
 
 
 #' @title Linear Regression 
 #'
-#' @description Compute an approximation of the integral of the function f(x)
-#' with respect to dx in the range [a, b] by Monte-Carlo integration using
-#' uniform sampling.
-#' @param response A \code{vector} of dimension 2 used to denote the integration
-#' region of interest, i.e. [a, b].
-#' @param covariates A \code{string} containing the function to be integrated. It
-#' is assumed that \code{x} is used as the variable of interest.
-#' @param alpha A \code{numeric} (integer) used to denote the number of simulations.
-#' @param method A \code{numeric} used to control the seed of the random number
-#' generator used by this function.
+#' @description Delivers inference on the paramater vector beta.
+#' @param response A \code{vector} response variable y of your data set of interest.
+#' @param covariates A \code{matrix} containing the explanatory variable x of your data set of interest. 
+#' @param alpha A \code{numeric} set to determine an estimate of confidence intervals. The most common confidence interval is 95%, with a level of significance, alpha = 0.05. Generally, alpha is between 0.01 and 0.1.
+#' @param method A \code{character} used to determine the fit; method = "asymptotic" or method = "bootstrap".
 #' @return A \code{list} containing the following attributes:
 #' \describe{
-#'      \item{I}{Estimated value of the integral}
-#'      \item{var}{Estimated variance of the estimator}
+#'      \item{beta}{Estimated value of beta hat}
+#'      \item{sigma2}{Estimate of the residual variance}
+#'      \item{variance_beta}{Estimate of the variance of the estimated beta}
+#'      \item{ci}{Estimate of the confidence interval based on alpha}
+#'      \item{mspe}{Estimate of how well the model predicts the response variable}
+#'      \item{ssm}{Model sum of squares}
+#'      \item{sse}{Error sum of squares, quantify how much the data points vary around the estimated regression line, y.hat}
+#'      \item{f.stat}{Calculated f statistic for use in f test and model fitting}
+#'      \item{residual}{??}
+#'      \item{y.hat}{Estimated slope of the regression line??}
 #' }
-#' @author Stephane Guerrier
+#' @Authors: Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Tereza
 #' @importFrom stats runif
 #' @export 
 #' @examples
-#' mc_int(x_range = c(0,1), fun = "x^2", B = 10^5)
-#' mc_int(x_range = c(0,1), fun = "x^2*sin(x^2/pi)", B = 10^5)
+#' my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
+#' my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 my_lm = function(response, covariates, alpha, method) {
   
   # Putting the data in a matrix format
@@ -116,10 +114,6 @@ fit_my_lm
 # Asymptotic CI method
 fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 fit_my_lm2
-
-# Showing off an error message
-fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
-fit_my_lm3
 
 # Using standard lm package
 fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
