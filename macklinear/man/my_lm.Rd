@@ -26,8 +26,8 @@ A \code{list} containing the following attributes:
      \item{ssm}{Model sum of squares}
      \item{sse}{Error sum of squares, quantify how much the data points vary around the estimated regression line, y.hat}
      \item{f.stat}{Calculated f statistic for use in f test and model fitting}
-     \item{residual}{??}
-     \item{y.hat}{Estimated slope of the regression line??}
+     \item{residual}{Difference between actual and predicted values}
+     \item{y.hat}{Predicted values on the regression fit}
 }
 }
 \description{
