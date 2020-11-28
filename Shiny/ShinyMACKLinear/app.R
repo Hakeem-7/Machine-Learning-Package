@@ -21,7 +21,7 @@ ui <- fluidPage(theme = shinytheme("united"),
                     #ABA PRINCIPAIL
                     "MACKLinear_FinalProjectGroup5",
                     
-                    MainPanel(style="text-align:justify;",
+                    mainPanel(style="text-align:justify;",
                               
                               tabPanel("Intro",
                                        
@@ -34,8 +34,8 @@ ui <- fluidPage(theme = shinytheme("united"),
                                        br(),
                                        
                                        h2("What our package have"),
-                                       em("The package must contain"), 
-                                       tags$ul("Confidence intervals: the user must be able to choose the significance level ?? to obtain for the 1???$/alpha$ ?? confidence intervals for ?? and whether,
+                                       em("The package must contain:"), 
+                                       tags$ul("Confidence intervals: the user must be able to choose the significance level  \\(\\alpha\\) to obtain for the 1-\\(\\alpha\\) confidence intervals for  \\(\\beta\\) and whether,
                             to use the asymptotic or bootstrap approach for this."),
                                        tags$ul("Plots including:"),
                                        tags$ol(
@@ -46,7 +46,7 @@ ui <- fluidPage(theme = shinytheme("united"),
                               ),
                               tags$li("Mean Square Prediction Error (MSPE) computed in matrix form:"),
                               tags$li("F-test: compute the statistic in matrix form and output the corresponding p-value."),
-                              tags$li("Help documentation for all functions (for example using the roxygen2 package"),)
+                              tags$li("Help documentation for all functions (for example using the roxygen2 package"),
                     
                     hr(),
                     br(),
@@ -148,10 +148,10 @@ tabPanel("Let's try",
             
             
             
-            
+         )
          )      
 )   
-)
+
 
 # Define server function  
 server <- function(input, output) {
