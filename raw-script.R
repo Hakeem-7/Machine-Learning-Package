@@ -1,34 +1,4 @@
----
-title: "Final Project, Group 5, STAT 6210"
-author: "Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Tereza Bethonico Terra"
-date: "12/04/2020"
-output: html_document
----
-Repository: [Final_Project_Group_5](https://github.com/AU-R-Programming/Final_Project_Group_5)
-\
-\
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## Packages
-<div class="alert alert-warning">
-  <strong>This will be used to install any packages needed for code. Currently, the only package needed is for accessing a sample dataset. To remove all dependencies on outside packages, we may want to create our own dataset.
-</div>
-```{r trueinstall, message=FALSE, warning=FALSE}
-
-# Installing any necessary packages
-if (!require("gamair")) {
-    install.packages("gamair")
-    library(ggplot2)
-}
-
-```
-
-
-## Linear Regression
-
-```{r linear_regression, error=TRUE}
+?lm
 
 # Example dataset from textbook, but we can change this
 data(hubble)
@@ -59,24 +29,15 @@ my_lm = function(response, covariates, alpha, method) {
   n <- length(response)
   p <- dim(covariates)[2] # Column of the parameters/predictors
   df <- n - p # degree of freedom
-  dfm <- p
-  dfe <- n - p
-  j <- matrix(1, nrow=n, ncol=n) #nxn matrix of ones for calculating ssm
-  int <- rep(1, length(response)) #vector of length n for intercept
   
   # Calculate statistics
   beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
   resid <- response - covariates%*%as.matrix(beta.hat) 
   sigma2.hat <- (1/df)*t(resid)%*%resid
   var.beta <- sigma2.hat*solve(t(covariates)%*%covariates)
-  y.hat <- covariates%*%beta.hat
-  mspe <- (sum((response - y.hat)^2))/n
-  ssm <- (t(beta.hat)%*%t(covariates)%*%response)-(t(response)%*%j%*%response)/n
-  sse <- (t(response)%*%response)-(t(beta.hat)%*%t(covariates)%*%response)
-  msm <- ssm/dfm
-  mse <- sse/dfe
-  f.stat <- msm/mse
   
+  
+ 
   # Defining parameter for confidence interval based on specified alpha
   quant <- 1 - alpha/2
   
@@ -89,18 +50,18 @@ my_lm = function(response, covariates, alpha, method) {
     i = 1
     beta.hats <- NULL
     while(i<=1000){
-      boot.data <- data[sample(nrow(data),size=n,replace=TRUE),]
+      size <- sample(2:nrow(data), 1)
+      boot.data <- data[sample(nrow(data),size=size,replace=TRUE),]
       beta.hat.boot <- solve(t(boot.data[,2])%*%boot.data[,2])%*%t(boot.data[,2])%*%boot.data[,1]
       beta.hats <- append(beta.hats, beta.hat.boot)
       i <- i+1
     }
     ci.beta <- quantile(beta.hats, c(alpha/2, 1-(alpha/2))) 
   }
-  return(list(beta = beta.hat, sigma2 = sigma2.hat, 
-              variance_beta = var.beta, ci = ci.beta,
-              mspe = mspe, ssm = ssm, sse = sse, f.stat = f.stat, residual = resid,
-              y.hat = y.hat))
   
+
+  return(list(beta = beta.hat, sigma2 = sigma2.hat, 
+              variance_beta = var.beta, ci = ci.beta))
 }
 
 # Bootstrap CI method
@@ -112,43 +73,25 @@ fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 fit_my_lm2
 
 # Showing off an error message
-fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
-fit_my_lm3
+
 
 # Using standard lm package
 fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
 
 
-```
-
-
-```{r Performance Comparison}
-
-# Comparing the output of our lm function with the base package
-
-base_result = c(fit_lm$coefficients, 
-                 (1/fit_lm$df.residual)*t(fit_lm$residuals)%*%fit_lm$residuals)
-
-manual_result_bootstrap = c(fit_my_lm$beta, fit_my_lm$sigma2)
-
-manual_result_asymptotic = c(fit_my_lm2$beta, fit_my_lm2$sigma2)
-
-result = cbind(base_result, manual_result_asymptotic, manual_result_bootstrap)
-row.names(result) = c("Beta", "Sigma")
-result
-
-```
-
-```{r Plots}
-
-plot(fit_my_lm2$y.hat, fit_my_lm2$residual)
-
-qqnorm(fit_my_lm2$residual)
-qqline(fit_my_lm2$residual, col = "red", lwd = 2)
-
-hist(fit_my_lm2$residual)
 
 
 
-```
+
+
+
+
+
+
+
+
+
+
+
+
 

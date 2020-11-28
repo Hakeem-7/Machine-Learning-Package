@@ -1,38 +1,42 @@
----
-title: "Final Project, Group 5, STAT 6210"
-author: "Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Tereza Bethonico Terra"
-date: "12/04/2020"
-output: html_document
----
-Repository: [Final_Project_Group_5](https://github.com/AU-R-Programming/Final_Project_Group_5)
-\
-\
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## Packages
-<div class="alert alert-warning">
-  <strong>This will be used to install any packages needed for code. Currently, the only package needed is for accessing a sample dataset. To remove all dependencies on outside packages, we may want to create our own dataset.
-</div>
-```{r trueinstall, message=FALSE, warning=FALSE}
-
 # Installing any necessary packages
 if (!require("gamair")) {
-    install.packages("gamair")
-    library(ggplot2)
+  install.packages("gamair")
+  library(ggplot2)
 }
-
-```
-
 
 ## Linear Regression
 
-```{r linear_regression, error=TRUE}
-
 # Example dataset from textbook, but we can change this
+library(gamair)
 data(hubble)
 
+
+#' @title Linear Regression 
+#'
+#' @description Delivers inference on the paramater vector beta.
+#' @param response A \code{vector} response variable y of your data set of interest.
+#' @param covariates A \code{matrix} containing the explanatory variable x of your data set of interest. 
+#' @param alpha A \code{numeric} set to determine an estimate of confidence intervals. The most common confidence interval is 95%, with a level of significance, alpha = 0.05. Generally, alpha is between 0.01 and 0.1.
+#' @param method A \code{character} used to determine the fit; method = "asymptotic" or method = "bootstrap".
+#' @return A \code{list} containing the following attributes:
+#' \describe{
+#'      \item{beta}{Estimated value of beta hat}
+#'      \item{sigma2}{Estimate of the residual variance}
+#'      \item{variance_beta}{Estimate of the variance of the estimated beta}
+#'      \item{ci}{Estimate of the confidence interval based on alpha}
+#'      \item{mspe}{Estimate of how well the model predicts the response variable}
+#'      \item{ssm}{Model sum of squares}
+#'      \item{sse}{Error sum of squares, quantify how much the data points vary around the estimated regression line, y.hat}
+#'      \item{f.stat}{Calculated f statistic for use in f test and model fitting}
+#'      \item{residual}{??}
+#'      \item{y.hat}{Estimated slope of the regression line??}
+#' }
+#' @Authors: Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Tereza
+#' @importFrom stats runif
+#' @export 
+#' @examples
+#' my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
+#' my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 my_lm = function(response, covariates, alpha, method) {
   
   # Putting the data in a matrix format
@@ -111,23 +115,16 @@ fit_my_lm
 fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 fit_my_lm2
 
-# Showing off an error message
-fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
-fit_my_lm3
-
 # Using standard lm package
 fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
 
 
-```
-
-
-```{r Performance Comparison}
+# Performance Comparison 
 
 # Comparing the output of our lm function with the base package
 
 base_result = c(fit_lm$coefficients, 
-                 (1/fit_lm$df.residual)*t(fit_lm$residuals)%*%fit_lm$residuals)
+                (1/fit_lm$df.residual)*t(fit_lm$residuals)%*%fit_lm$residuals)
 
 manual_result_bootstrap = c(fit_my_lm$beta, fit_my_lm$sigma2)
 
@@ -137,9 +134,8 @@ result = cbind(base_result, manual_result_asymptotic, manual_result_bootstrap)
 row.names(result) = c("Beta", "Sigma")
 result
 
-```
 
-```{r Plots}
+# Creation of Plots 
 
 plot(fit_my_lm2$y.hat, fit_my_lm2$residual)
 
@@ -147,8 +143,3 @@ qqnorm(fit_my_lm2$residual)
 qqline(fit_my_lm2$residual, col = "red", lwd = 2)
 
 hist(fit_my_lm2$residual)
-
-
-
-```
-
