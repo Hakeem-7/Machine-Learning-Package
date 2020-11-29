@@ -34,7 +34,7 @@ if (!require("gamair")) {
 # Example dataset from textbook, but we can change this
 data(hubble)
 
-my_lm = function(response, covariates, alpha, method) {
+my_lm = function(response, covariates, alpha=0.05, method="asymptotic", plots=TRUE) {
   
   # Putting the data in a matrix format
   response <- as.matrix(response)
@@ -53,7 +53,7 @@ my_lm = function(response, covariates, alpha, method) {
     warning('Alpha is typically between 0.01 and 0.1. Consider using a different alpha value')
   
   # Check to see if appropriate method has been listed
-  if(method != "asymptotic" & method != "bootstrap") 
+    if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
     stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
   
   # Define parameters
@@ -81,7 +81,7 @@ my_lm = function(response, covariates, alpha, method) {
   quant <- 1 - alpha/2
   
   # Change CI calculation based on specified method
-  if(method == "asymptotic"){
+  if(method == "asymptotic" | method == "a"){
     ci.beta <- c(beta.hat - qnorm(p = quant)*sqrt(var.beta), beta.hat + 
                    qnorm(p = quant)*sqrt(var.beta))
   } else{
