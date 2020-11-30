@@ -88,8 +88,13 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
   
   # Change CI calculation based on specified method
   if(tolower(method) == "asymptotic" | tolower(method) == "a"){
-    ci.beta <- c(beta.hat - qnorm(p = quant)*sqrt(var.beta), beta.hat + 
-                   qnorm(p = quant)*sqrt(var.beta))
+    iter = length(beta.hat)
+    ci.beta <- NULL
+    for(i in 1:length(beta.hat)){
+    ci.list <- c(beta.hat[i] - qnorm(p = quant)*sqrt(var.beta[i]), beta.hat[i] + 
+                   qnorm(p = quant)*sqrt(var.beta[i]))
+    ci.beta <- rbind(ci.beta, ci.list)
+    }
   } else{
     data <- cbind(response, covariates)
     i = 1
