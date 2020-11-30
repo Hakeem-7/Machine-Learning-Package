@@ -81,6 +81,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
   msm <- ssm/dfm
   mse <- sse/dfe
   f.stat <- msm/mse
+  p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
   
   # Defining parameter for confidence interval based on specified alpha
   quant <- 1 - alpha/2
@@ -102,9 +103,9 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
     ci.beta <- quantile(beta.hats, c(alpha/2, 1-(alpha/2)))
   }
   return(list(beta = beta.hat, sigma2 = sigma2.hat, 
-              variance_beta = var.beta, ci = ci.beta,
-              mspe = mspe, ssm = ssm, sse = sse, f.stat = f.stat, residual = resid,
-              y.hat = y.hat))
+              variance_beta = var.beta, ci = ci.beta, mspe = mspe,
+              ssm = ssm, sse = sse, f.stat = f.stat, p.value = p.value,
+              residuals = resid, y.hat = y.hat))
 }
 
 
