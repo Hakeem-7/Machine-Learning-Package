@@ -101,11 +101,15 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
     beta.hats <- NULL
     while(i<=1000){
       boot.data <- data[sample(nrow(data),size=n,replace=TRUE),]
-      beta.hat.boot <- solve(t(boot.data[,2])%*%boot.data[,2])%*%t(boot.data[,2])%*%boot.data[,1]
-      beta.hats <- append(beta.hats, beta.hat.boot)
+      beta.hat.boot <- solve(t(boot.data[,2:dim(boot.data)[2]])%*%boot.data[,2:dim(boot.data)[2]])%*%t(boot.data[,2:dim(boot.data)[2]])%*%boot.data[,1]
+      beta.hats <- rbind(beta.hats, t(beta.hat.boot))
       i <- i+1
     }
-    ci.beta <- quantile(beta.hats, c(alpha/2, 1-(alpha/2)))
+    ci.beta <- NULL
+    for(i in 1:dim(beta.hats)[2]){
+      ci.list <- ci.list <- quantile(beta.hats[,i], c(alpha/2, 1-(alpha/2)))
+      ci.beta <- rbind(ci.beta, ci.list)
+    }
   }
   return(list(beta = beta.hat, sigma2 = sigma2.hat, 
               variance_beta = var.beta, ci = ci.beta, mspe = mspe,
