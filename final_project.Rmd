@@ -56,10 +56,6 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
   if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
     stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
   
-  # Check to see if plots is TRUE or FALSE only
-  if(plots != TRUE & tolower(plots) != "true" & tolower(plots) != "t" & plots != FALSE & tolower(plots) != "false" & tolower(plots) != "f")
-    stop('Please specify if you would like plots by entering TRUE or FALSE.')
-  
   # Define parameters
   n <- length(response)
   p <- dim(covariates)[2] # Column of the parameters/predictors
