@@ -34,7 +34,7 @@ if (!require("gamair")) {
 # Example dataset from textbook, but we can change this
 data(hubble)
 
-my_lm = function(response, covariates, alpha=0.05, method="asymptotic", plots=TRUE) {
+my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
   
   # Putting the data in a matrix format
   response <- as.matrix(response)
@@ -100,13 +100,6 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", plots=TR
     }
     ci.beta <- quantile(beta.hats, c(alpha/2, 1-(alpha/2)))
   }
-  if(plots == TRUE | tolower(plots) == "t" | tolower(plots) == "true"){
-    resid_plot <- plot(y.hat, resid)
-    norm_plot <- qqnorm(resid)
-    norm_plot <- qqline(resid, col = "red", lwd = 2)
-    hist_plot <- hist(resid)
-    #return(list(resid_plot, norm_plot, hist_plot))
-  }
   return(list(beta = beta.hat, sigma2 = sigma2.hat, 
               variance_beta = var.beta, ci = ci.beta,
               mspe = mspe, ssm = ssm, sse = sse, f.stat = f.stat, residual = resid,
@@ -160,14 +153,17 @@ result
 
 ```{r Plots}
 
-plot(fit_my_lm2$y.hat, fit_my_lm2$residual)
+plot_func <- function(lm){
+  plot(lm$y.hat, lm$residual)
 
-qqnorm(fit_my_lm2$residual)
-qqline(fit_my_lm2$residual, col = "red", lwd = 2)
+  qqnorm(lm$residual)
+  qqline(lm$residual, col = "red", lwd = 2)
 
-hist(fit_my_lm2$residual)
+  hist(lm$residual)
 
+}
 
+plot_func(fit_my_lm)
 
 ```
 
