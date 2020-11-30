@@ -53,8 +53,12 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", plots=TR
     warning('Alpha is typically between 0.01 and 0.1. Consider using a different alpha value')
   
   # Check to see if appropriate method has been listed
-    if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
+  if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
     stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
+  
+  # Check to see if plots is TRUE or FALSE only
+  if(plots != TRUE & tolower(plots) != "true" & tolower(plots) != "t" & plots != FALSE & tolower(plots) != "false" & tolower(plots) != "f")
+    stop('Please specify if you would like plots by entering TRUE or FALSE.')
   
   # Define parameters
   n <- length(response)
@@ -81,7 +85,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", plots=TR
   quant <- 1 - alpha/2
   
   # Change CI calculation based on specified method
-  if(method == "asymptotic" | method == "a"){
+  if(tolower(method) == "asymptotic" | tolower(method) == "a"){
     ci.beta <- c(beta.hat - qnorm(p = quant)*sqrt(var.beta), beta.hat + 
                    qnorm(p = quant)*sqrt(var.beta))
   } else{
@@ -94,14 +98,21 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", plots=TR
       beta.hats <- append(beta.hats, beta.hat.boot)
       i <- i+1
     }
-    ci.beta <- quantile(beta.hats, c(alpha/2, 1-(alpha/2))) 
+    ci.beta <- quantile(beta.hats, c(alpha/2, 1-(alpha/2)))
+  }
+  if(plots == TRUE | tolower(plots) == "t" | tolower(plots) == "true"){
+    resid_plot <- plot(y.hat, resid)
+    norm_plot <- qqnorm(resid)
+    norm_plot <- qqline(resid, col = "red", lwd = 2)
+    hist_plot <- hist(resid)
+    #return(list(resid_plot, norm_plot, hist_plot))
   }
   return(list(beta = beta.hat, sigma2 = sigma2.hat, 
               variance_beta = var.beta, ci = ci.beta,
               mspe = mspe, ssm = ssm, sse = sse, f.stat = f.stat, residual = resid,
               y.hat = y.hat))
-  
 }
+
 
 
 # Bootstrap CI method
