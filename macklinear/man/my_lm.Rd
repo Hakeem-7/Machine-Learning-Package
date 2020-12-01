@@ -4,7 +4,7 @@
 \alias{my_lm}
 \title{Linear Regression}
 \usage{
-my_lm(response, covariates, alpha, method)
+my_lm(response, covariates, alpha = 0.05, method = "asymptotic")
 }
 \arguments{
 \item{response}{A \code{vector} response variable y of your data set of interest.}
@@ -13,8 +13,9 @@ my_lm(response, covariates, alpha, method)
 
 \item{alpha}{A \code{numeric} set to determine an estimate of confidence intervals. The most common confidence interval is 95 percent, with a level of significance, alpha = 0.05. Generally, alpha is between 0.01 and 0.1.}
 
-\item{method}{A \code{character} used to determine the fit; method = "asymptotic" or method = "bootstrap".}
+\item{method}{A \code{character} used to determine the approach for estimating the confidence intervals for beta; method = "asymptotic" or method = "bootstrap".}
 }
+
 \value{
 A \code{list} containing the following attributes:
 \describe{
@@ -24,18 +25,17 @@ A \code{list} containing the following attributes:
      \item{ci}{Estimate of the confidence interval based on alpha}
      \item{mspe}{Estimate of how well the model predicts the response variable}
      \item{ssm}{Model sum of squares}
-     \item{sse}{Error sum of squares, quantify how much the data points vary around the estimated regression line, y.hat}
+     \item{sse}{Error sum of squares, quantify how much the data points vary around the estimated regression line points, y.hat}
      \item{f.stat}{Calculated f statistic for use in f test and model fitting}
-     \item{residual}{Difference between actual and predicted values}
-     \item{y.hat}{Predicted values on the regression fit}
+     \item{p.value}{The probability of the observed data, or data more extreme, given the null hypothesis is true}
+     \item{residual}{??}
+     \item{y.hat}{??}
 }
 }
 \description{
-This is a package for performing linear regressions and also associated statistical outputs. Confidence intervals and mean square prediction error can be computed. F-tests are able to be conducted and publication quality plots of data are able to be generated. 
+Delivers inference on the parameter vector beta.
 }
 \examples{
-
 my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
-
 my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 }

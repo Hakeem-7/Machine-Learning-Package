@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of macklinear is to ...
+The goal of this project is to develop an R package that implements a foundational machine learning algorithm - linear regression. The scope of the package includes producing outputs such as statistical confidence intervals (C.I) at the user selected significance level and method of solution. The two method of solution available in the developed package are the asymptotic and the bootstrap.
 
 ## Installation
 
@@ -67,13 +67,13 @@ We will now use the `my_lm()` function to analyze the relationship between **spe
 
 ``` {r example 2}
 
-my_lm(cars$dist, cars$speed, alpha = 0.05, method = "bootstrap")
+fit_my_lm <- my_lm(cars$dist, cars$speed, alpha = 0.05, method = "bootstrap")
 
 ```
 <br><br><br>
-Our function returns multiple statistics regarding the relationship between our x and y variables, **speed** and **distance**. 
+Our function returns multiple statistical outputs regarding the relationship between our x and y variables, **speed** and **distance**. 
 <br><br><br>
-`beta`
+`beta` is the estimated value of beta hat.
 
 `sigma2` is an estimate of the residual variance. 
 
@@ -81,13 +81,15 @@ Our function returns multiple statistics regarding the relationship between our 
 
 `ci` is the confidence interval based on the alpha set in the function paramaters. 
 
-`mspe` 
+`mspe` is an estimate of how well the model predicts the response variable.
 
-`ssm`
+`ssm` is the model sum of squares. 
 
-`sse`
+`sse` is the error sum of squares, which quantifies how much the residual data points vary around the estimated regression line points, y.hat.
 
-`f.stat`
+`f.stat` is the f statistic for use in f test and model fitting.
+
+`p.value` is the probability of the observed data, or data more extreme, given the null hypothesis is true.
 
 `residual`
 
