@@ -96,6 +96,10 @@ Our function returns multiple statistical outputs regarding the relationship bet
 
 `y.hat` 
 <br><br><br>
+For every 1 unit increase in speed, there is a *3.932409 (beta)* *(+/- 0.743139 95% CI)* unit increase in distance. 
+<br><br>
+Our **p-value** is 1.489836e-12, which indicates that there is a significant relationship between our descriptive and response variables. 
+<br><br><br>
 We can also produce descriptive plot of our residuals using `plot_func()`. The paramater needed in `plot_func()` is the name of the object created when using the `my_lm()` function. 
 <br><br>
 In the example above we called our object `fit_my_lm` - so this is what will be used as the paramater in `plot_func`. 
@@ -113,3 +117,32 @@ my_plots <- plot_func(fit_my_lm)
 
 ## Tutorial - Multiple Regression
 ### Iris Dataset 
+
+We can also use the `my_lm()` function to perform multiple regressions. Compared to simple linear regressions, performed in the example above, multiple linear regressions are use to predict the value of response variable when two or more covariates are present. 
+<br><br><br>
+```{r example iris}
+library(macklinear)
+
+head(iris)
+
+plot(iris)
+```
+<br><br><br>
+There are four continuous variables in the iris data set that can be used for multiple regression: **sepal length, sepal width, petal length**, and **petal width**. 
+
+Using our `my_lm()` function, we want to see if our covariates sepal length and sepal width can explain the relationship in our response variable, petal length. 
+
+We will use a **95% confidence interval** and an **asymptotic** method. 
+<br><br><br>
+``` {r example iris my lm}
+
+iris_results <- my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, alpha = 0.05, method = "asymptotic")
+
+```
+<br><br><br>
+To get our descriptive plots, we can use `plot_func()` with the paramater again the object we called our `my_lm()` function.
+``` {r example iris plot}
+
+iris_plots <- plot_func(iris_results)
+
+```
