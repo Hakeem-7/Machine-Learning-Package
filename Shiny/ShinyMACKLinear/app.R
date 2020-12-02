@@ -52,23 +52,23 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                               
                                 tabPanel("Meet the team", 
          
-         h1("MACK team", "text-align:center;",
+         h1("MACK team"),
          
          h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px"),
-         tags$img(src='Cary.png', height = 70, width = 50),
-         em("Creator, Author" = "font-size:17px"),
+         tags$img(src='Akeem.png', height = 140, width = 125),
+         tags$ul("Creator", "Author" = "font-size:25px"),
         
          h2(a("Cary Burdick", href="https://github.com/clb00635", target="_blank"),style = "font-size:25px"),
-         tags$img(src='Cary.png', height = 70, width = 50),
-         em("Author",style = "font-size:17px"),
+         tags$img(src='Cary.png', height = 140, width = 120),
+         tags$ul("Author",style = "font-size:25px"),
          
          h2(a("Kaelyn Fogelman", href="https://github.com/kaefogelman", target="_blank"),style = "font-size:25px"), 
-         tags$img(src='Kaelyn_Fogelman.png', height = 70, width = 70),
-         em("Author",style = "font-size:17px")),
+         tags$img(src='Kaelyn_Fogelman.png', height = 140, width = 125),
+         tags$ul("Author",style = "font-size:25px")),
          
          h2(a("Maria Terra", href="https://github.com/MariaTerezaTerra", target="_blank"),style = "font-size:25px"),
-         tags$img(src='MariaTerezaTerra.png', height = 70, width = 70),
-         em("Author",style = "font-size:17px")),
+         tags$img(src='MariaTerezaTerra.png', height = 140, width = 140),
+         tags$ul("Author",style = "font-size:25px")),
 
 
 
