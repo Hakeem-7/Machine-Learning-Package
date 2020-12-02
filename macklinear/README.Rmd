@@ -38,13 +38,14 @@ Or you can install the development version from [GitHub](https://github.com/) wi
 devtools::install_github("AU-R-Programming/Final_Project_Group_5")
 ```
 
-## Tutorial
+## Tutorial - Single Regression
+### Cars Dataset 
 
 This is a basic example using the base R data set, cars, which shows you how to solve a common problem.
 <br><br><br>
 The cars data set has two variables, **speed** and **distance**. We will use the `my_lm` function of the `macklinear` package to fit a regression and estimate the fit of our explanatory variable to our response variable.
 <br><br><br>
-```{r example}
+```{r example cars}
 library(macklinear)
 
 head(cars)
@@ -65,7 +66,7 @@ The final paramater in the function, `method` is determining the method with whi
 <br><br><br>
 We will now use the `my_lm()` function to analyze the relationship between **speed and distance**, with a **95%** confidence interval and a **bootstrap** approach for generating confidence interval. 
 
-``` {r example 2}
+``` {r example cars my lm}
 
 fit_my_lm <- my_lm(cars$dist, cars$speed, alpha = 0.05, method = "bootstrap")
 
@@ -94,5 +95,21 @@ Our function returns multiple statistical outputs regarding the relationship bet
 `residual`
 
 `y.hat` 
+<br><br><br>
+We can also produce descriptive plot of our residuals using `plot_func()`. The paramater needed in `plot_func()` is the name of the object created when using the `my_lm()` function. 
+<br><br>
+In the example above we called our object `fit_my_lm` - so this is what will be used as the paramater in `plot_func`. 
+<br><br>
+`plot_func()` will return 3 plots: 
+1. A plot of the estimated residual values versus the estimated fitted values
+2. A qq-plot plotting estimated residual values, with a fitted line
+3. A histogram of the estimated residual values
+<br><br><br>
+``` {r example cars plot}
 
+my_plots <- plot_func(fit_my_lm)
 
+```
+
+## Tutorial - Multiple Regression
+### Iris Dataset 
