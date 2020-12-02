@@ -45,7 +45,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                 
                       hr(),
                       br(),
-                                ),
+                                )),
  
 
                                  #ABA2
@@ -64,7 +64,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
          
          h2(a("Kaelyn Fogelman", href="https://github.com/kaefogelman", target="_blank"),style = "font-size:25px"), 
          tags$img(src='Kaelyn_Fogelman.png', height = 140, width = 125),
-         tags$ul("Author",style = "font-size:25px")),
+         tags$ul("Author",style = "font-size:25px"),
          
          h2(a("Maria Terra", href="https://github.com/MariaTerezaTerra", target="_blank"),style = "font-size:25px"),
          tags$img(src='MariaTerezaTerra.png', height = 140, width = 140),
