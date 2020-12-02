@@ -31,7 +31,8 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                              are able to be generated"),
                                 br(),
                                 br(),
-                                h2("What our package have"),
+                                
+                                h1("What our package have"),
                                 em("The package must contain:"),
                                 tags$li("Confidence intervals: the user must be able to choose the significance level  \\(\\alpha\\) to obtain for the 1-\\(\\alpha\\) confidence intervals for  \\(\\beta\\) and whether,
                             to use the asymptotic or bootstrap approach for this."),
@@ -43,6 +44,12 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                   tags$li("F-test: compute the statistic in matrix form and output the corresponding p-value."),
                                   tags$li("Help documentation for all functions (for example using the roxygen2 package"),
                                 
+                                  br(),
+                                  br(),
+                                  
+                      h1("More info"),
+                      em(a("Click here", href="https://github.com/AU-R-Programming/Final_Project_Group_5", target="_blank"),style = "font-size:25px","to find our GitHub repository"),
+                      
                       hr(),
                       br(),
                                 )),
@@ -52,9 +59,9 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                               
                                 tabPanel("Meet the team", 
          
-         h1("MACK team"),
+         h2("MACK team"),
          
-         h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px"),
+         h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px", ),
          tags$img(src='Akeem.png', height = 140, width = 125),
          tags$ul("Creator", "Author" = "font-size:25px"),
         
