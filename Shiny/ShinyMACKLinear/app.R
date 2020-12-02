@@ -47,8 +47,8 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                   br(),
                                   br(),
                                   
-                      h1("More info"),
-                      em(a("Click here", href="https://github.com/AU-R-Programming/Final_Project_Group_5", target="_blank"),style = "font-size:25px","to find our GitHub repository"),
+                      h2("More info"),
+                      tags$code(a("Click here", href="https://github.com/AU-R-Programming/Final_Project_Group_5", target="_blank"),style = "font-size:25px","to find our GitHub repository"),
                       
                       hr(),
                       br(),
@@ -57,9 +57,9 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 
                                  #ABA2
                               
-                                tabPanel("Meet the team", 
+                                tabPanel("Meet the team", style="text-align:center;",
          
-         h2("MACK team"),
+         
          
          h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px", ),
          tags$img(src='Akeem.png', height = 140, width = 125),
@@ -82,7 +82,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 
                               #ABA3
 
-                              tabPanel("Let's give a try",
+                              tabPanel("Let's give a try", style="text-align:justify;",
 
          h1("F-testLoading"),
          em("Loading...")
