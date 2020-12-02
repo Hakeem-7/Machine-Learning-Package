@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of this project is to develop an R package that implements a foundational machine learning algorithm - linear regression. The scope of the package includes producing outputs such as statistical confidence intervals (C.I) at the user selected significance level and method of solution. The two method of solution available in the developed package are the asymptotic and the bootstrap.
+The goal of this project is to develop an R package that implements a foundational machine learning algorithm - linear regression. The scope of the package includes producing outputs such as statistical confidence intervals (C.I.) at the user selected significance level and method of solution. The two methods of solution available in the developed package are the asymptotic and the bootstrap.
 
 ## Installation
 
@@ -62,7 +62,7 @@ The x variable, or the explanatory variable, is speed. The variable **"speed"** 
 <br><br><br>
 `Alpha` is our level of significance set for our function. Alpha is generally set at 0.05, indicating a 95% confidence interval. If you do not set 0 < alpha < 1, you will have a warning generated as the true value of alpha must be between 0 and 1. Additionally, if you do not set 0.01 < alpha <0.1, you will have a warning generated. Alpha is typically between 0.01 and 0.1, therefore you should consider using a different alpha value.
 <br><br><br>
-The final paramater in the function, `method` is determining the method with which confidence intervals for β will be generated. You can choose to use a "boostrap" or "asymptotic" method for generating confidence intervals. 
+The final parameter in the function, `method` is determining the method with which confidence intervals for β will be generated. You can choose to use a "bootstrap" or "asymptotic" method for generating confidence intervals. 
 <br><br><br>
 We will now use the `my_lm()` function to analyze the relationship between **speed and distance**, with a **95%** confidence interval and a **bootstrap** approach for generating confidence interval. 
 
@@ -74,35 +74,37 @@ fit_my_lm <- my_lm(cars$dist, cars$speed, alpha = 0.05, method = "bootstrap")
 <br><br><br>
 Our function returns multiple statistical outputs regarding the relationship between our x and y variables, **speed** and **distance**. 
 <br><br><br>
-`beta` is the estimated value of beta hat.
+`y.avg` is the mean of all y-values in the data set.
+
+`beta` is the estimated value of beta-hat.
 
 `sigma2` is an estimate of the residual variance. 
 
 `variance_beta` is an estimate of the variance of the estimated beta.
 
-`ci` is the confidence interval based on the alpha set in the function paramaters. 
+`y.hat` is the predicted y-value.
+
+`ci` is the confidence interval based on the alpha set in the function parameters. 
 
 `mspe` is an estimate of how well the model predicts the response variable.
 
 `ssm` is the model sum of squares. 
 
-`sse` is the error sum of squares, which quantifies how much the residual data points vary around the estimated regression line points, y.hat.
+`sse` is the error sum of squares, which quantifies how much the residual data points vary around the estimated regression line points, y-hat.
 
 `f.stat` is the f statistic for use in f test and model fitting.
 
 `p.value` is the probability of the observed data, or data more extreme, given the null hypothesis is true.
 
-`residual`
-
-`y.hat` 
+`residual` is the difference between the observed y-value and the predicted y-value, or y-hat.
 <br><br><br>
 For every 1 unit increase in speed, there is a *3.932409 (beta)* *(+/- 0.743139 95% CI)* unit increase in distance. 
 <br><br>
 Our **p-value** is 1.489836e-12, which indicates that there is a significant relationship between our descriptive and response variables. 
 <br><br><br>
-We can also produce descriptive plot of our residuals using `plot_func()`. The paramater needed in `plot_func()` is the name of the object created when using the `my_lm()` function. 
+We can also produce descriptive plot of our residuals using `plot_func()`. The parameter needed in `plot_func()` is the name of the object created when using the `my_lm()` function. 
 <br><br>
-In the example above we called our object `fit_my_lm` - so this is what will be used as the paramater in `plot_func`. 
+In the example above we called our object `fit_my_lm` - so this is what will be used as the parameter in `plot_func`. 
 <br><br>
 `plot_func()` will return 3 plots: 
 1. A plot of the estimated residual values versus the estimated fitted values
@@ -118,7 +120,7 @@ my_plots <- plot_func(fit_my_lm)
 ## Tutorial - Multiple Regression
 ### Iris Dataset 
 
-We can also use the `my_lm()` function to perform multiple regressions. Compared to simple linear regressions, performed in the example above, multiple linear regressions are use to predict the value of response variable when two or more covariates are present. 
+We can also use the `my_lm()` function to perform multiple regressions. Compared to simple linear regressions, performed in the example above, multiple linear regressions are used to predict the value of the response variable when two or more covariates are present. 
 <br><br><br>
 ```{r example iris}
 library(macklinear)
@@ -140,7 +142,7 @@ iris_results <- my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, a
 
 ```
 <br><br><br>
-To get our descriptive plots, we can use `plot_func()` with the paramater again the object we called our `my_lm()` function.
+To get our descriptive plots, we can use `plot_func()` with the parameter again the object we called our `my_lm()` function.
 ``` {r example iris plot}
 
 iris_plots <- plot_func(iris_results)
