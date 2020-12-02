@@ -19,9 +19,11 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                 navbarPage(
                     "MACKLinear_FinalProjectGroup5",
                     
-                    tabPanel( tabName = "Intro"),
                       mainPanel(style="text-align:justify;",
-                                "Intro",
+                      
+                                tabsetPanel(
+                                tabPanel("Intro",
+                                
                                 h1("Welcome"),
                                 em ("This is an app developed to for our final project in 'R-programming for Data Science' class. We created a package for performing linear
                              regressions and also associated statistical outputs. Confidence intervals and mean square prediction error can be 
@@ -31,50 +33,57 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                 br(),
                                 h2("What our package have"),
                                 em("The package must contain:"),
-                                tags$ul("Confidence intervals: the user must be able to choose the significance level  \\(\\alpha\\) to obtain for the 1-\\(\\alpha\\) confidence intervals for  \\(\\beta\\) and whether,
+                                tags$li("Confidence intervals: the user must be able to choose the significance level  \\(\\alpha\\) to obtain for the 1-\\(\\alpha\\) confidence intervals for  \\(\\beta\\) and whether,
                             to use the asymptotic or bootstrap approach for this."),
-                                tags$ul("Plots including:",
-                                  tags$li("Residuals vs fitted-values"),
-                                  tags$li("qq-plot of residuals"),
-                                  tags$li("Histogram (or density) of residuals")
-                                      ),
-                                tags$ol(
+                                tags$li("Plots including:",
+                                  tags$ul("- Residuals vs fitted-values"),
+                                  tags$ul("- qq-plot of residuals"),
+                                  tags$ul("- Histogram (or density) of residuals"),
                                   tags$li("Mean Square Prediction Error (MSPE) computed in matrix form:"),
                                   tags$li("F-test: compute the statistic in matrix form and output the corresponding p-value."),
-                                  tags$li("Help documentation for all functions (for example using the roxygen2 package")
-                                ),
+                                  tags$li("Help documentation for all functions (for example using the roxygen2 package"),
+                                
                       hr(),
                       br(),
-                
+                                ),
  
 
-                      #ABA2
-                      
-tabPanel("Meet the team", tabName = "Meet the team",
-         p(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px"),
-         p("Creator, Author" = "font-size:17px"),
-         p(a("Cary Burdick", href="https://github.com/clb00635", target="_blank"),style = "font-size:25px"),
-         p("Author",style = "font-size:17px"),
+                                 #ABA2
+                              
+                                tabPanel("Meet the team", 
+         
+         h1("MACK team", "text-align:center;",
+         
+         h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px"),
+         tags$img(src='Cary.png', height = 70, width = 50),
+         em("Creator, Author" = "font-size:17px"),
+        
+         h2(a("Cary Burdick", href="https://github.com/clb00635", target="_blank"),style = "font-size:25px"),
+         tags$img(src='Cary.png', height = 70, width = 50),
+         em("Author",style = "font-size:17px"),
+         
+         h2(a("Kaelyn Fogelman", href="https://github.com/kaefogelman", target="_blank"),style = "font-size:25px"), 
          tags$img(src='Kaelyn_Fogelman.png', height = 70, width = 70),
-         p(a("Kaelyn Fogelman", href="https://github.com/kaefogelman", target="_blank"),style = "font-size:25px"), 
-         p("Author",style = "font-size:17px")),
+         em("Author",style = "font-size:17px")),
+         
+         h2(a("Maria Terra", href="https://github.com/MariaTerezaTerra", target="_blank"),style = "font-size:25px"),
          tags$img(src='MariaTerezaTerra.png', height = 70, width = 70),
-         p(a("Maria Terra", href="https://github.com/MariaTerezaTerra", target="_blank"),style = "font-size:25px"),
-         p("Author",style = "font-size:17px")),
+         em("Author",style = "font-size:17px")),
 
 
 
 
-#ABA3
+                              #ABA3
 
-tabPanel("Let give a try", tabName = "Let's give a try",
+                              tabPanel("Let's give a try",
 
          h1("F-testLoading"),
          em("Loading...")
 
      
-
+)
 #As tres ou duas ultimas de sempre que cada hora eh uma coisa
+)
 )
 )
 )
