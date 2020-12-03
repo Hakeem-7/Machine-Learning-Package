@@ -34,7 +34,7 @@ if (!require("gamair")) {
 # Example dataset from textbook, but we can change this
 data(hubble)
 
-my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
+my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercept=1) {
   
   # Putting the data in a matrix format
   response <- as.matrix(response)
@@ -55,33 +55,62 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
   # Check to see if appropriate method has been listed
   if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
     stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
-
-  # Define parameters
-  int <- rep(1, length(response))
-  covariates <- as.matrix(cbind(int, covariates))
-  n <- length(response)
-  p <- dim(covariates)[2] # Column of the parameters/predictors
-  df <- n - p # degree of freedom
-  dfm <- p - 1
-  dfe <- n - p
-  j <- matrix(1, nrow=n, ncol=n)
-  one <- rep(1, n)
-
   
-  # Calculate statistics
-  beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
-  resid <- response - covariates%*%as.matrix(beta.hat) 
-  sigma2.hat <- (1/df)*t(resid)%*%resid
-  var.beta <- t(sigma2.hat%*%diag(solve(t(covariates)%*%covariates)))
-  y.hat <- covariates%*%beta.hat
-  mspe <- (sum((response - y.hat)^2))/n
-  y.avg <- (t(response)%*%one)/n
-  ssm <- t(y.hat-y.avg[1])%*%(y.hat-y.avg[1])
-  sse <- t(response-y.hat)%*%(response-y.hat)
-  msm <- ssm/dfm
-  mse <- sse/dfe
-  f.stat <- msm/mse
-  p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
+  if(intercept != 1 & intercept != -1)
+    stop('Enter a value of 1 if the model should estimate the intercept or -1 otherwise')
+  
+  # Define parameters and calculate statistics with and without intercept
+  if(intercept==1){
+    # Parameters with intercept
+    n <- length(response)
+    int <- rep(1, n)
+    covariates <- as.matrix(cbind(int, covariates))
+    p <- dim(covariates)[2] # Column of the parameters/predictors
+    dfm <- p - 1
+    dfe <- n - p
+    j <- matrix(1, nrow=n, ncol=n)
+    one <- rep(1, n)
+    
+    # Statistics with intercept
+    beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
+    resid <- response - covariates%*%as.matrix(beta.hat) 
+    sigma2.hat <- (1/dfe)*t(resid)%*%resid
+    var.beta <- t(sigma2.hat%*%diag(solve(t(covariates)%*%covariates)))
+    y.hat <- covariates%*%beta.hat
+    mspe <- (t(response-y.hat)%*%(response-y.hat))/n
+    y.avg <- (t(response)%*%one)/n
+    ssm <- t(y.hat-y.avg[1])%*%(y.hat-y.avg[1])
+    sse <- t(response-y.hat)%*%(response-y.hat)
+    msm <- ssm/dfm
+    mse <- sse/dfe
+    f.stat <- msm/mse
+    p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
+  }
+  else {
+    # Parameters without intercept
+    n <- length(response)
+    covariates <- covariates
+    p <- dim(covariates)[2] # Column of the parameters/predictors
+    dfm <- p
+    dfe <- n - p
+    j <- matrix(1, nrow=n, ncol=n)
+    one <- rep(1, n)
+    
+    # Statistics without intercept
+    beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
+    resid <- response - covariates%*%as.matrix(beta.hat) 
+    sigma2.hat <- (1/dfe)*t(resid)%*%resid
+    var.beta <- t(sigma2.hat%*%diag(solve(t(covariates)%*%covariates)))
+    y.hat <- covariates%*%beta.hat
+    mspe <- (t(response-y.hat)%*%(response-y.hat))/n
+    y.avg <- (t(response)%*%one)/n
+    ssm <- t(y.hat)%*%(y.hat)
+    sse <- t(response-y.hat)%*%(response-y.hat)
+    msm <- ssm/dfm
+    mse <- sse/dfe
+    f.stat <- msm/mse
+    p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
+  }
   
   # Defining parameter for confidence interval based on specified alpha
   quant <- 1 - alpha/2
@@ -91,9 +120,9 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
     iter = length(beta.hat)
     ci.beta <- NULL
     for(i in 1:length(beta.hat)){
-    ci.list <- c(beta.hat[i] - qnorm(p = quant)*sqrt(var.beta[i]), beta.hat[i] + 
-                   qnorm(p = quant)*sqrt(var.beta[i]))
-    ci.beta <- rbind(ci.beta, ci.list)
+      ci.list <- c(beta.hat[i] - qnorm(p = quant)*sqrt(var.beta[i]), beta.hat[i] + 
+                     qnorm(p = quant)*sqrt(var.beta[i]))
+      ci.beta <- rbind(ci.beta, ci.list)
     }
   } else{
     data <- cbind(response, covariates)
