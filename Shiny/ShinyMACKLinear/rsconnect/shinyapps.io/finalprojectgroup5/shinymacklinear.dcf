@@ -1,0 +1,12 @@
+name: shinymacklinear
+title:
+username:
+account: finalprojectgroup5
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3341455
+bundleId: 3935820
+url: https://finalprojectgroup5.shinyapps.io/shinymacklinear/
+when: 1606958308.17691
+asMultiple: FALSE
+asStatic: FALSE

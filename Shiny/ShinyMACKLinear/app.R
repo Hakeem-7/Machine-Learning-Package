@@ -12,7 +12,7 @@ library(shiny)
 library(shinythemes)
 library(r2symbols)
 library(shinyjs)
-
+install.packages('rsconnect')
 # Define UI
 ui <- fluidPage(theme = shinytheme("cosmo"),
                 
@@ -61,8 +61,8 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
          
          
          
-         h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px", ),
-         tags$img(src='Akeem.png', height = 140, width = 125),
+         h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px"),
+         tags$img(src='Akeem.png', height = 140, width = 125, border-radius = 50%),
          tags$ul("Creator", "Author" = "font-size:25px"),
         
          h2(a("Cary Burdick", href="https://github.com/clb00635", target="_blank"),style = "font-size:25px"),
@@ -77,8 +77,9 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
          tags$img(src='MariaTerezaTerra.png', height = 140, width = 140),
          tags$ul("Author",style = "font-size:25px")),
 
+# border-radius = 50%
 
-
+# colocar numa classe 
 
                               #ABA3
 
