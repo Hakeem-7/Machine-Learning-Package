@@ -1,0 +1,29 @@
+Package: macklinear
+Type: Package
+Title: A Package for Performing Linear Regression and Associated
+        Statistics
+Version: 1.0
+Authors@R: c(
+    person("Akeem", "Ajede", email = "aaa0061@auburn.edu", role = c("aut","cre")),
+    person("Cary", "Burdick", role = "aut"),
+    person("Kaelyn", "Fogelman", role = "aut"),
+    person("Maria Tereza", "Terra", role = "aut")
+    )
+Maintainer: Kaelyn Fogelman <kjf0021@auburn.edu>
+Description: This is a package for performing linear regressions and also associated 
+    statistical outputs. Confidence intervals and mean square prediction error can be 
+    computed. F-tests are able to be conducted and publication quality plots of data 
+    are able to be generated. 
+License: use_mit_license()
+Encoding: UTF-8
+LazyData: true
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 7.1.1
+NeedsCompilation: no
+Packaged: 2020-12-03 22:08:38 UTC; kaelynfogelman
+Author: Akeem Ajede [aut, cre],
+  Cary Burdick [aut],
+  Kaelyn Fogelman [aut],
+  Maria Tereza Terra [aut]
+Built: R 3.6.0; ; 2020-12-03 22:08:51 UTC; unix

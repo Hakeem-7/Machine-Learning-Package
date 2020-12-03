@@ -1,0 +1,18 @@
+* installing *source* package ‘macklinear’ ...
+** using staged installation
+** R
+** byte-compile and prepare package for lazy loading
+** help
+Warning: /Users/kaelynfogelman/Documents/GitHub/Final_Project_Group_5/macklinear.Rcheck/00_pkg_src/macklinear/man/my_lm.Rd:16: unknown macro '\item'
+Warning: /Users/kaelynfogelman/Documents/GitHub/Final_Project_Group_5/macklinear.Rcheck/00_pkg_src/macklinear/man/my_lm.Rd:18: unexpected section header '\value'
+Warning: /Users/kaelynfogelman/Documents/GitHub/Final_Project_Group_5/macklinear.Rcheck/00_pkg_src/macklinear/man/my_lm.Rd:35: unexpected section header '\description'
+Warning: /Users/kaelynfogelman/Documents/GitHub/Final_Project_Group_5/macklinear.Rcheck/00_pkg_src/macklinear/man/my_lm.Rd:38: unexpected section header '\examples'
+Warning: /Users/kaelynfogelman/Documents/GitHub/Final_Project_Group_5/macklinear.Rcheck/00_pkg_src/macklinear/man/my_lm.Rd:44: unexpected END_OF_INPUT '
+'
+Warning: /Users/kaelynfogelman/Documents/GitHub/Final_Project_Group_5/macklinear.Rcheck/00_pkg_src/macklinear/man/plot_func.Rd:15: unknown macro '\plot'
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (macklinear)
