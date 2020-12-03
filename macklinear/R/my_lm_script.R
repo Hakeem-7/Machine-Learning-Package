@@ -20,17 +20,18 @@ data(hubble)
 #' @param method A \code{character} used to determine the fit; method = "asymptotic" or method = "bootstrap".
 #' @return A \code{list} containing the following attributes:
 #' \describe{
-#'      \item{beta}{Estimated value of beta hat}
+#'      \item{y.avg}{The mean of all y-values in the data set}
+#'      \item{beta}{The estimated value of beta-hat}
 #'      \item{sigma2}{Estimate of the residual variance}
 #'      \item{variance_beta}{Estimate of the variance of the estimated beta}
-#'      \item{ci}{Estimate of the confidence interval based on alpha}
+#'      \item{y.hat}{The predicted y-value}
+#'      \item{ci}{The confidence interval based on the alpha set in the function parameters}
 #'      \item{mspe}{Estimate of how well the model predicts the response variable}
 #'      \item{ssm}{Model sum of squares}
-#'      \item{sse}{Error sum of squares, quantify how much the data points vary around the estimated regression line, y.hat}
-#'      \item{f.stat}{Calculated f statistic for use in f test and model fitting}
-#'      \item{p.value}{??}
-#'      \item{residual}{??}
-#'      \item{y.hat}{Estimated slope of the regression line??}
+#'      \item{sse}{The error sum of squares, which quantifies how much the residual data points vary around the estimated regression line points, y-hat}
+#'      \item{f.stat}{The f statistic for use in f test and model fitting}
+#'      \item{p.value}{The probability of the observed data, or data more extreme, given the null hypothesis is true}
+#'      \item{residual}{The difference between the observed y-value and the predicted y-value, or y-hat}
 #' }
 #' @Authors: Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Tereza
 #' @importFrom stats runif
@@ -38,6 +39,8 @@ data(hubble)
 #' @examples
 #' my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
 #' my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
+#' 
+#' my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, alpha = 0.05, method = "asymptotic")
 my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercept=1) {
   
   # Putting the data in a matrix format
