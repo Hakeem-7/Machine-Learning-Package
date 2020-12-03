@@ -25,17 +25,16 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                 tabPanel("Intro",
                                 
                                 h1("Welcome"),
-                                em ("This is an app developed to for our final project in 'R-programming for Data Science' class. We created a package for performing linear
-                             regressions and also associated statistical outputs. Confidence intervals and mean square prediction error can be 
-                             computed. F-tests are able to be conducted and publication quality plots of data 
-                             are able to be generated"),
+                                em ("This is an app developed to for our final project in 'R-programming for Data Science' class. We created a package for performing
+                                simple and multiple linear regressions and also associated statistical outputs. Confidence intervals and mean square prediction error
+                                can be computed. F-tests are able to be conducted and publication quality plots of data are able to be generated"),
                                 br(),
                                 br(),
                                 
                                 h1("What our package have"),
                                 em("The package must contain:"),
-                                tags$li("Confidence intervals: the user must be able to choose the significance level  \\(\\alpha\\) to obtain for the 1-\\(\\alpha\\) confidence intervals for  \\(\\beta\\) and whether,
-                            to use the asymptotic or bootstrap approach for this."),
+                                tags$li("Confidence intervals: the user must be able to choose the significance level  \\(\\alpha\\) to obtain for the 1-\\(\\alpha\\)
+                                confidence intervals for  \\(\\beta\\) and whether,to use the asymptotic or bootstrap approach for this."),
                                 tags$li("Plots including:",
                                   tags$ul("- Residuals vs fitted-values"),
                                   tags$ul("- qq-plot of residuals"),
@@ -46,55 +45,73 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                 
                                   br(),
                                   br(),
-                                  
-                      h2("More info"),
-                      tags$code(a("Click here", href="https://github.com/AU-R-Programming/Final_Project_Group_5", target="_blank"),style = "font-size:25px","to find our GitHub repository"),
                       
-                      hr(),
-                      br(),
+                                  
+                                 h2("More info"),
+                                tags$code(a("Click here", href="https://github.com/AU-R-Programming/Final_Project_Group_5", target="_blank"),
+                                          style = "font-size:25px","to find our GitHub repository"),
+                      
+                                 hr(),
+                                 br(),
+                      
+                      
+                      
+                      
+                      
+                      
                                 )),
  
 
                                  #ABA2
                               
-                                tabPanel("Meet the team", style="text-align:center;",
+                                tabPanel("Meet the team", style="text-align:center;", 
+                                         
          
-         
-         
-         h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px"),
-         tags$img(src='Akeem.png', height = 140, width = 125, border-radius = 50%),
+                                                  
+          h2(a("Akeem Ajede", href="https://github.com/Hakeem-7", target="_blank"),style = "font-size:25px"),
+         tags$img(src='Akeem.png', height = 160, width = 160),
          tags$ul("Creator", "Author" = "font-size:25px"),
-        
+         
          h2(a("Cary Burdick", href="https://github.com/clb00635", target="_blank"),style = "font-size:25px"),
-         tags$img(src='Cary.png', height = 140, width = 120),
+         tags$img(src='Cary.png', height = 160, width = 160),
          tags$ul("Author",style = "font-size:25px"),
+        
          
          h2(a("Kaelyn Fogelman", href="https://github.com/kaefogelman", target="_blank"),style = "font-size:25px"), 
-         tags$img(src='Kaelyn_Fogelman.png', height = 140, width = 125),
+         tags$img(src='Kaelyn_Fogelman.png', height = 160, width = 160),
          tags$ul("Author",style = "font-size:25px"),
          
          h2(a("Maria Terra", href="https://github.com/MariaTerezaTerra", target="_blank"),style = "font-size:25px"),
-         tags$img(src='MariaTerezaTerra.png', height = 140, width = 140),
+         tags$img(src='MariaTerezaTerra.png', height = 160, width = 160),
          tags$ul("Author",style = "font-size:25px")),
+         hr(),
+         br(),
+         
+              
 
-# border-radius = 50%
-
-# colocar numa classe 
 
                               #ABA3
 
-                              tabPanel("Let's give a try", style="text-align:justify;",
+                              tabPanel("Let's give a try", style="text-align:justify;",style = "border: 4px double grey;",
 
          h1("F-testLoading"),
-         em("Loading...")
+         em("Loading..."),
 
+         br(),
+         br(),
+         
+         
+         hr(),
+         br(),
      
+)
+)
 )
 #As tres ou duas ultimas de sempre que cada hora eh uma coisa
 )
 )
-)
-)
+
+
 
 
 # Define server function  
