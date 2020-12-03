@@ -38,10 +38,7 @@ data(hubble)
 #' @examples
 #' my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
 #' my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
-# Example dataset from textbook, but we can change this
-data(hubble)
-
-my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
+my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercept=1) {
   
   # Putting the data in a matrix format
   response <- as.matrix(response)
@@ -63,32 +60,94 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
   if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
     stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
   
-  # Define parameters
-  int <- rep(1, length(response))
-  covariates <- as.matrix(cbind(int, covariates))
-  n <- length(response)
-  p <- dim(covariates)[2] # Column of the parameters/predictors
-  df <- n - p # degree of freedom
-  dfm <- p - 1
-  dfe <- n - p
-  j <- matrix(1, nrow=n, ncol=n)
-  one <- rep(1, n)
+  # Check to make sure either 1 or -1 specified for intercept
+  if(intercept != 1 & intercept != -1)
+    stop('Enter a value of 1 if the model should estimate the intercept or -1 otherwise')
   
+  # Check if response variable has more than one column
+  if(dim(response)[2] > 1)
+    stop('Only one response variable may be used.')
   
-  # Calculate statistics
-  beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
-  resid <- response - covariates%*%as.matrix(beta.hat) 
-  sigma2.hat <- (1/df)*t(resid)%*%resid
-  var.beta <- t(sigma2.hat%*%diag(solve(t(covariates)%*%covariates)))
-  y.hat <- covariates%*%beta.hat
-  mspe <- (sum((response - y.hat)^2))/n
-  y.avg <- (t(response)%*%one)/n
-  ssm <- t(y.hat-y.avg[1])%*%(y.hat-y.avg[1])
-  sse <- t(response-y.hat)%*%(response-y.hat)
-  msm <- ssm/dfm
-  mse <- sse/dfe
-  f.stat <- msm/mse
-  p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
+  # Define parameters and calculate statistics with and without intercept
+  if(intercept==1){
+    # Parameters with intercept
+    k <- 0
+    n <- length(response)
+    int <- rep(1, n)
+    covariates <- as.matrix(cbind(int, covariates))
+    p <- dim(covariates)[2] # Column of the parameters/predictors
+    dfm <- p - 1
+    dfe <- n - p
+    j <- matrix(1, nrow=n, ncol=n)
+    one <- rep(1, n)
+    
+    # Statistics with intercept
+    beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
+    resid <- response - covariates%*%as.matrix(beta.hat)
+    sigma2.hat <- (1/dfe)*t(resid)%*%resid
+    var.beta <- t(sigma2.hat%*%diag(solve(t(covariates)%*%covariates)))
+    y.hat <- covariates%*%beta.hat
+    mspe <- (t(response-y.hat)%*%(response-y.hat))/n
+    y.avg <- (t(response)%*%one)/n
+    ssm <- t(y.hat-y.avg[1])%*%(y.hat-y.avg[1])
+    sse <- t(response-y.hat)%*%(response-y.hat)
+    msm <- ssm/dfm
+    mse <- sse/dfe
+    f.stat <- msm/mse
+    p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
+    
+    # Setting up the y table
+    y.table <- cbind(response, y.hat, resid)
+    colnames(y.table) <- c('actual_y_values','predicted_y_values','residuals')
+    
+    # Setting up names of rows for beta table
+    row_names <- NULL
+    for(i in 0:(length(beta.hat)-1)) { 
+      iter_rows <- paste("b", i, sep = "")
+      row_names <- append(row_names, iter_rows)
+    }
+  }
+  else {
+    # Parameters without intercept
+    k <- 1
+    n <- length(response)
+    covariates <- covariates
+    p <- dim(covariates)[2] # Column of the parameters/predictors
+    dfm <- p
+    dfe <- n - p
+    j <- matrix(1, nrow=n, ncol=n)
+    one <- rep(1, n)
+    
+    # Statistics without intercept
+    beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
+    resid <- response - covariates%*%as.matrix(beta.hat)
+    sigma2.hat <- (1/dfe)*t(resid)%*%resid
+    var.beta <- t(sigma2.hat%*%diag(solve(t(covariates)%*%covariates)))
+    y.hat <- covariates%*%beta.hat
+    mspe <- (t(response-y.hat)%*%(response-y.hat))/n
+    y.avg <- (t(response)%*%one)/n
+    ssm <- t(y.hat)%*%(y.hat)
+    sse <- t(response-y.hat)%*%(response-y.hat)
+    msm <- ssm/dfm
+    mse <- sse/dfe
+    f.stat <- msm/mse
+    p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
+    
+    # Setting up names of rows for beta table
+    row_names <- NULL
+    for(i in 1:length(beta.hat)) { 
+      iter_rows <- paste("b", i, sep = "")
+      row_names <- append(row_names, iter_rows)
+    }
+  }
+  
+  # More beta table preparation
+  rownames(beta.hat) <- row_names
+  rownames(var.beta) <- row_names
+  
+  # Setting up the y table
+  y.table <- cbind(response, y.hat, resid)
+  colnames(y.table) <- c('actual y values','predicted y values','residuals')
   
   # Defining parameter for confidence interval based on specified alpha
   quant <- 1 - alpha/2
@@ -102,6 +161,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
                      qnorm(p = quant)*sqrt(var.beta[i]))
       ci.beta <- rbind(ci.beta, ci.list)
     }
+    rownames(ci.beta) <- row_names
   } else{
     data <- cbind(response, covariates)
     i = 1
@@ -118,28 +178,46 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic") {
       ci.beta <- rbind(ci.beta, ci.list)
     }
   }
+  
+  # Setting up the beta table
+  rownames(ci.beta) <- row_names
+  beta.table <- cbind(beta.hat, var.beta, ci.beta)
+  colnames(beta.table) <- c('beta hat','variance of beta hat','CI lower bound','CI upper bound')
+  
+  #invisible(y.hat=y.hat)
+  
   return(list(beta = beta.hat, sigma2 = sigma2.hat, 
               variance_beta = var.beta, ci = ci.beta, mspe = mspe,
               ssm = ssm, sse = sse, f.stat = f.stat, p.value = p.value,
-              residuals = resid, y.hat = y.hat))
+              y.hat = y.hat, residuals = resid, y.table = y.table,
+              beta.table = beta.table))
 }
-
-
-
-# Bootstrap CI method
-fit_my_lm = my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
-fit_my_lm
-
-# Asymptotic CI method
-fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
-fit_my_lm2
 
 # Showing off an error message
 fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
-fit_my_lm3
 
 # Using standard lm package
 fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
+
+
+```
+
+
+```{r slr_0_05_asymptotic_int}
+
+# Asymptotic CI method
+fit_my_lm = my_lm(hubble$y, hubble$x, 0.05, "asymptotic", 1)
+fit_my_lm
+
+```
+
+
+```{r mlr_0_01_bootstrap_noint}
+
+# Bootstrap CI method
+fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "b", -1)
+fit_my_lm2
+
 
 
 # Performance Comparison 
