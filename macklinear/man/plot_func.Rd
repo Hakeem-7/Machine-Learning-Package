@@ -7,12 +7,12 @@
 plot_func(lm)
 }
 \arguments{
-\item{lm}{An \code{object}, generated using \code{\link{my_lm()}} whose class will determine the behavior of the plots returned.}
+\item{lm}{An \code{object}, generated using \code{\link{my_lm}} whose class will determine the behavior of the plots returned.}
 }
 \value{
 A series of 3 plots containing the following attributes:
 \describe{
-     \item{Plot}{A plot of the estimated residual values versus the estimated fitted values.}
+     \plot{Plot}{A plot of the estimated residual values versus the estimated fitted values.}
      \item{QQ-Plot}{A qq-plot plotting estimated residual values, with a fitted line}
      \item{Histogram}{A histogram of the estimated residual values}
 }

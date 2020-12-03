@@ -4,32 +4,32 @@
 \alias{my_lm}
 \title{Linear Regression}
 \usage{
-my_lm(response, covariates, alpha = 0.05, method = "asymptotic")
+my_lm(response, covariates, alpha = 0.05, method = "asymptotic", intercept = 1)
 }
 \arguments{
 \item{response}{A \code{vector} response variable y of your data set of interest.}
 
 \item{covariates}{A \code{matrix} containing the explanatory variable x of your data set of interest.}
 
-\item{alpha}{A \code{numeric} set to determine an estimate of confidence intervals. The most common confidence interval is 95 percent, with a level of significance, alpha = 0.05. Generally, alpha is between 0.01 and 0.1.}
+\item{alpha}{A \code{numeric} set to determine an estimate of confidence intervals. The most common confidence interval is 95%, with a level of significance, alpha = 0.05. Generally, alpha is between 0.01 and 0.1.}
 
-\item{method}{A \code{character} used to determine the approach for estimating the confidence intervals for beta; method = "asymptotic" or method = "bootstrap".}
+\item{method}{A \code{character} used to determine the fit; method = "asymptotic" or method = "bootstrap".}
 }
-
 \value{
 A \code{list} containing the following attributes:
 \describe{
-     \item{beta}{Estimated value of beta hat}
+     \item{y.avg}{The mean of all y-values in the data set}
+     \item{beta}{The estimated value of beta-hat}
      \item{sigma2}{Estimate of the residual variance}
      \item{variance_beta}{Estimate of the variance of the estimated beta}
-     \item{ci}{Estimate of the confidence interval based on alpha}
+     \item{y.hat}{The predicted y-value}
+     \item{ci}{The confidence interval based on the alpha set in the function parameters}
      \item{mspe}{Estimate of how well the model predicts the response variable}
      \item{ssm}{Model sum of squares}
-     \item{sse}{Error sum of squares, quantify how much the data points vary around the estimated regression line points, y.hat}
-     \item{f.stat}{Calculated f statistic for use in f test and model fitting}
+     \item{sse}{The error sum of squares, which quantifies how much the residual data points vary around the estimated regression line points, y-hat}
+     \item{f.stat}{The f statistic for use in f test and model fitting}
      \item{p.value}{The probability of the observed data, or data more extreme, given the null hypothesis is true}
-     \item{residual}{??}
-     \item{y.hat}{??}
+     \item{residual}{The difference between the observed y-value and the predicted y-value, or y-hat}
 }
 }
 \description{

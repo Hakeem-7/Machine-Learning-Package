@@ -10,12 +10,11 @@ if (!require("gamair")) {
 library(gamair)
 data(hubble)
 
-
-#' @title Linear Regression 
+#' @title Linear Regression
 #'
 #' @description Delivers inference on the parameter vector beta.
 #' @param response A \code{vector} response variable y of your data set of interest.
-#' @param covariates A \code{matrix} containing the explanatory variable x of your data set of interest. 
+#' @param covariates A \code{matrix} containing the explanatory variable x of your data set of interest.
 #' @param alpha A \code{numeric} set to determine an estimate of confidence intervals. The most common confidence interval is 95%, with a level of significance, alpha = 0.05. Generally, alpha is between 0.01 and 0.1.
 #' @param method A \code{character} used to determine the fit; method = "asymptotic" or method = "bootstrap".
 #' @return A \code{list} containing the following attributes:
@@ -35,42 +34,42 @@ data(hubble)
 #' }
 #' @Authors: Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Tereza
 #' @importFrom stats runif
-#' @export 
+#' @export
 #' @examples
 #' my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
 #' my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
-#' 
+#'
 #' my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, alpha = 0.05, method = "asymptotic")
 my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercept=1) {
-  
+
   # Putting the data in a matrix format
   response <- as.matrix(response)
   covariates <- as.matrix(covariates)
-  
+
   # Check to see if they are of the same row length
-  if(nrow(response) != nrow(covariates)) 
+  if(nrow(response) != nrow(covariates))
     stop('The number of rows of the response and predictor variables must be equal.')
-  
+
   # Check to see if alpha is between 0 and 1
-  if(alpha >= 1 | alpha <= 0) 
+  if(alpha >= 1 | alpha <= 0)
     stop('True value of alpha must lie between 0 and 1')
-  
+
   # Produce a warning if alpha is greater than 0.1 (i.e is lower than 90% confidence interval)
-  if(alpha > 0.1) 
+  if(alpha > 0.1)
     warning('Alpha is typically between 0.01 and 0.1. Consider using a different alpha value')
-  
+
   # Check to see if appropriate method has been listed
   if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
     stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
-  
+
   # Check to make sure either 1 or -1 specified for intercept
   if(intercept != 1 & intercept != -1)
     stop('Enter a value of 1 if the model should estimate the intercept or -1 otherwise')
-  
+
   # Check if response variable has more than one column
   if(dim(response)[2] > 1)
     stop('Only one response variable may be used.')
-  
+
   # Define parameters and calculate statistics with and without intercept
   if(intercept==1){
     # Parameters with intercept
@@ -83,7 +82,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
     dfe <- n - p
     j <- matrix(1, nrow=n, ncol=n)
     one <- rep(1, n)
-    
+
     # Statistics with intercept
     beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
     resid <- response - covariates%*%as.matrix(beta.hat)
@@ -98,14 +97,14 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
     mse <- sse/dfe
     f.stat <- msm/mse
     p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
-    
+
     # Setting up the y table
     y.table <- cbind(response, y.hat, resid)
     colnames(y.table) <- c('actual_y_values','predicted_y_values','residuals')
-    
+
     # Setting up names of rows for beta table
     row_names <- NULL
-    for(i in 0:(length(beta.hat)-1)) { 
+    for(i in 0:(length(beta.hat)-1)) {
       iter_rows <- paste("b", i, sep = "")
       row_names <- append(row_names, iter_rows)
     }
@@ -120,7 +119,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
     dfe <- n - p
     j <- matrix(1, nrow=n, ncol=n)
     one <- rep(1, n)
-    
+
     # Statistics without intercept
     beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
     resid <- response - covariates%*%as.matrix(beta.hat)
@@ -135,32 +134,32 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
     mse <- sse/dfe
     f.stat <- msm/mse
     p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
-    
+
     # Setting up names of rows for beta table
     row_names <- NULL
-    for(i in 1:length(beta.hat)) { 
+    for(i in 1:length(beta.hat)) {
       iter_rows <- paste("b", i, sep = "")
       row_names <- append(row_names, iter_rows)
     }
   }
-  
+
   # More beta table preparation
   rownames(beta.hat) <- row_names
   rownames(var.beta) <- row_names
-  
+
   # Setting up the y table
   y.table <- cbind(response, y.hat, resid)
   colnames(y.table) <- c('actual y values','predicted y values','residuals')
-  
+
   # Defining parameter for confidence interval based on specified alpha
   quant <- 1 - alpha/2
-  
+
   # Change CI calculation based on specified method
   if(tolower(method) == "asymptotic" | tolower(method) == "a"){
     iter = length(beta.hat)
     ci.beta <- NULL
     for(i in 1:length(beta.hat)){
-      ci.list <- c(beta.hat[i] - qnorm(p = quant)*sqrt(var.beta[i]), beta.hat[i] + 
+      ci.list <- c(beta.hat[i] - qnorm(p = quant)*sqrt(var.beta[i]), beta.hat[i] +
                      qnorm(p = quant)*sqrt(var.beta[i]))
       ci.beta <- rbind(ci.beta, ci.list)
     }
@@ -181,41 +180,28 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
       ci.beta <- rbind(ci.beta, ci.list)
     }
   }
-  
+
   # Setting up the beta table
   rownames(ci.beta) <- row_names
   beta.table <- cbind(beta.hat, var.beta, ci.beta)
   colnames(beta.table) <- c('beta hat','variance of beta hat','CI lower bound','CI upper bound')
-  
+
   #invisible(y.hat=y.hat)
-  
-  return(list(beta = beta.hat, sigma2 = sigma2.hat, 
+
+  return(list(beta = beta.hat, sigma2 = sigma2.hat,
               variance_beta = var.beta, ci = ci.beta, mspe = mspe,
               ssm = ssm, sse = sse, f.stat = f.stat, p.value = p.value,
               y.hat = y.hat, residuals = resid, y.table = y.table,
               beta.table = beta.table))
 }
 
-# Showing off an error message
-fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
-
 # Using standard lm package
 fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
-
-
-```
-
-
-```{r slr_0_05_asymptotic_int}
 
 # Asymptotic CI method
 fit_my_lm = my_lm(hubble$y, hubble$x, 0.05, "asymptotic", 1)
 fit_my_lm
 
-```
-
-
-```{r mlr_0_01_bootstrap_noint}
 
 # Bootstrap CI method
 fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "b", -1)
@@ -223,22 +209,11 @@ fit_my_lm2
 
 
 
-# Performance Comparison 
-# Comparing the output of our lm function with the base package
+# Performance Comparison
 
-base_result = c(fit_lm$coefficients, 
-                (1/fit_lm$df.residual)*t(fit_lm$residuals)%*%fit_lm$residuals)
 
-manual_result_bootstrap = c(fit_my_lm$beta, fit_my_lm$sigma2)
 
-manual_result_asymptotic = c(fit_my_lm2$beta, fit_my_lm2$sigma2)
-
-result = cbind(base_result, manual_result_asymptotic, manual_result_bootstrap)
-row.names(result) = c("Beta", "Sigma")
-result
-  
-
-#' @title Linear Regression Plot  
+#' @title Linear Regression Plot
 #'
 #' @description Descriptive plots on to deliver inference on the parameter vector beta, using calculated statistics from \code{my_lm).
 #' @param lm An \code{object}, generated using \code{\link{my_lm}} whose class will determine the behavior of the plots returned.
@@ -250,22 +225,22 @@ result
 #' }
 #' @Authors: Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Tereza
 #' @importFrom stats runif
-#' @export 
+#' @export
 #' @examples
 #' fit_my_lm <- my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
 #' plot_func(fit_my_lm)
-#' 
+#'
 #' results <- my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 #' plot_func(results)
 
 plot_func <- function(lm){
   plot(lm$y.hat, lm$residual)
-  
+
   qqnorm(lm$residual)
   qqline(lm$residual, col = "red", lwd = 2)
-  
+
   hist(lm$residual)
-  
+
 }
 
 plot_func(fit_my_lm)
