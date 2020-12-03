@@ -11,9 +11,9 @@ my_lm(response, covariates, alpha = 0.05, method = "asymptotic", intercept = 1)
 
 \item{covariates}{A \code{matrix} containing the explanatory variable x of your data set of interest.}
 
-\item{alpha}{A \code{numeric} set to determine an estimate of confidence intervals. The most common confidence interval is 95%, with a level of significance, alpha = 0.05. Generally, alpha is between 0.01 and 0.1.}
+\item{alpha}{A \code{numeric} set to determine an estimate of confidence intervals. The most common confidence interval is 95\%, with a level of significance, alpha = 0.05. Generally, alpha is between 0.01 and 0.1.}
 
-\item{method}{A \code{character} used to determine the fit; method = "asymptotic" or method = "bootstrap".}
+\item{method}{A \code{character} used to determine the fit; \code{method = "asymptotic"} or \code{method = "bootstrap"}.}
 }
 \value{
 A \code{list} containing the following attributes:
@@ -36,8 +36,9 @@ A \code{list} containing the following attributes:
 Delivers inference on the parameter vector beta.
 }
 \examples{
-my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
-my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 
 my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, alpha = 0.05, method = "asymptotic")
+}
+\author{
+Akeem Ajede and Cary Burdick and Kaelyn Fogelman and Maria Tereza
 }

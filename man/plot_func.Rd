@@ -12,18 +12,14 @@ plot_func(lm)
 \value{
 A series of 3 plots containing the following attributes:
 \describe{
-     \plot{Plot}{A plot of the estimated residual values versus the estimated fitted values.}
+     \item{Plot}{A plot of the estimated residual values versus the estimated fitted values.}
      \item{QQ-Plot}{A qq-plot plotting estimated residual values, with a fitted line}
      \item{Histogram}{A histogram of the estimated residual values}
 }
 }
 \description{
-
+Descriptive plots on to deliver inference on the parameter vector beta, using calculated statistics from \code{my_lm}.
 }
-\examples{
-fit_my_lm <- my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
-plot_func(fit_my_lm)
-
-results <- my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
-plot_func(results)
+\author{
+Akeem Ajede and Cary Burdick and Kaelyn Fogelman and Maria Tereza
 }
