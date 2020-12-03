@@ -20,7 +20,12 @@ knitr::opts_chunk$set(echo = TRUE)
 # Installing any necessary packages
 if (!require("gamair")) {
     install.packages("gamair")
-    library(ggplot2)
+    library(gamair)
+}
+
+if (!require("rock")) {
+    install.packages("rock")
+    library(rock)
 }
 
 ```
@@ -31,7 +36,7 @@ if (!require("gamair")) {
 
 ```{r linear_regression, error=TRUE}
 
-# Example dataset from textbook, but we can change this
+# Example dataset from gamair package
 data(hubble)
 
 my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercept=1) {
@@ -189,19 +194,8 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
               beta.table = beta.table))
 }
 
-
-
-# Bootstrap CI method
-fit_my_lm = my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
-fit_my_lm
-
-# Asymptotic CI method
-fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
-fit_my_lm2
-
 # Showing off an error message
 fit_my_lm3 = my_lm(hubble$y, hubble$x, 02, "asymptotic")
-fit_my_lm3
 
 # Using standard lm package
 fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
@@ -210,10 +204,25 @@ fit_lm <- lm(hubble$y ~ hubble$x - 1) # -1 eliminates the intercept
 ```
 
 
+```{r slr_0_05_asymptotic_int}
+
+# Asymptotic CI method
+fit_my_lm = my_lm(hubble$y, hubble$x, 0.05, "asymptotic", 1)
+fit_my_lm
+
+```
 
 
+```{r mlr_0_01_bootstrap_noint}
 
-```{r Performance Comparison}
+# Bootstrap CI method
+fit_my_lm2 = my_lm(hubble$y, hubble$x, 0.05, "b", -1)
+fit_my_lm2
+
+```
+
+
+```{r Performance Comparison, eval=FALSE, include=FALSE}
 
 # Comparing the output of our lm function with the base package
 
