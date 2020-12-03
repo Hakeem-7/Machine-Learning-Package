@@ -25,8 +25,6 @@
 #' @importFrom stats runif
 #' @export
 #' @examples
-#' my_lm(hubble$y, hubble$x, 0.05, "bootstrap")
-#' my_lm(hubble$y, hubble$x, 0.05, "asymptotic")
 #'
 #' my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, alpha = 0.05, method = "asymptotic")
 my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercept=1) {
