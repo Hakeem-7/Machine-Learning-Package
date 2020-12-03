@@ -35,7 +35,7 @@ Or you can install the development version from [GitHub](https://github.com/) wi
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("AU-R-Programming/Final_Project_Group_5")
+devtools::install_github("AU-R-Programming/Final_Project_Group_5/macklinear")
 ```
 
 ## Tutorial - Single Regression
