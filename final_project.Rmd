@@ -56,8 +56,13 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
   if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
     stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
   
+  # Check to make sure either 1 or -1 specified for intercept
   if(intercept != 1 & intercept != -1)
     stop('Enter a value of 1 if the model should estimate the intercept or -1 otherwise')
+  
+  # Check if response variable has more than one column
+  if(dim(response)[2] > 1)
+    stop('Only one response variable may be used.')
   
   # Define parameters and calculate statistics with and without intercept
   if(intercept==1){
