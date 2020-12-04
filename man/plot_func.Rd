@@ -20,6 +20,13 @@ A series of 3 plots containing the following attributes:
 \description{
 Descriptive plots on to deliver inference on the parameter vector beta, using calculated statistics from \code{my_lm}.
 }
+\examples{
+
+data(iris)
+
+fit_my_lm <- my_lm(iris$Sepal.Length, iris$Sepal.Width, alpha = 0.05, method = "bootstrap")
+plot_func(fit_my_lm)
+}
 \author{
 Akeem Ajede and Cary Burdick and Kaelyn Fogelman and Maria Tereza
 }

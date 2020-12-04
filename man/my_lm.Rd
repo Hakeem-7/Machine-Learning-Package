@@ -37,6 +37,12 @@ Delivers inference on the parameter vector beta.
 }
 \examples{
 
+data(iris)
+
+simple regression 
+my_lm(iris$Sepal.Length, iris$Sepal.Width, alpha = 0.05, method = "bootstrap")
+
+multiple regression 
 my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, alpha = 0.05, method = "asymptotic")
 }
 \author{
