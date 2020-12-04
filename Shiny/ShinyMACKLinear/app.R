@@ -33,10 +33,10 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                 br(),
                                 br(),
 
-                                h1("What our package have"),
+                                h1("Our package"),
                                 em("The package must contain:"),
                                 tags$li("Confidence intervals: the user must be able to choose the significance level  \\(\\alpha\\) to obtain for the 1-\\(\\alpha\\)
-                                confidence intervals for  \\(\\beta\\) and whether,to use the asymptotic or bootstrap approach for this."),
+                                confidence intervals for  \\(\\alpha\\) and whether,to use the asymptotic or bootstrap approach for this."),
                                 tags$li("Plots including:",
                                   tags$ul("- Residuals vs fitted-values"),
                                   tags$ul("- qq-plot of residuals"),
@@ -47,6 +47,35 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 
                                   br(),
                                   br(),
+
+                                h1("Usage"),
+                                em("There are two functions contained in the package:"),
+                                tags$li("my_lm() for building a linear regression model and outputting related statistics,"),
+                                tags$li("plot_func() for creating plots of some of these statistics from linear regression."),
+                                  br(),
+                                em("The full form of each function with each argument and default value, if any, is listed below:"),
+                                  br(),
+                                  br(),
+                                tags$code("my_lm(response, covariates, alpha = 0.05, method = asymptotic, intercept = 1", style = "color: blue"),
+                                br(),
+                                tags$code("plot_func(lm)", style = "color: blue"),
+                                  br(),
+                                br(),
+                                tags$li("response: a one-dimensional vector of numerical y values used as the response variable in the regression equation."),
+                                tags$li("covariates: a matrix of numerical x values used as the explanatory variable(s) in the regression equation. Can be one-dimensional
+                                        if running simple linear regression or two-dimensional if running multiple linear regression."),
+                                tags$li("alpha: a value between 0 and 1 that specifies the alpha level with which to form the two-tailed confidence interval for beta.hat.
+                                        The default value is 0.05."),
+                                tags$li("method: a string value indicating the method used for generating the confidence intervals for beta.hat. The asymptotic method
+                                        will be performed if asymptotic or `a` are specified. The bootstrap method will be performed if `bootstrap` or `b are specified.
+                                        The default value is `asymptotic`."),
+                                tags$li("intercept: a binary value of either 1 or -1 specifying if the model should estimate the intercept.
+                                        A value of 1 will include the intercept while -1 will exclude the intercept. The default value is 1."),
+
+
+                                  br(),
+                                  br(),
+
 
 
                                  h2("More info"),
@@ -96,19 +125,11 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 
                               tabPanel("Let's give a try", style="text-align:justify;",style = "border: 4px double grey;",
 
-                                       vars <- setdiff(names(iris), "Species"),
+                                       h2("Loading"),
 
-                                       pageWithSidebar(
-                                         headerPanel('Iris k-means clustering'),
-                                         sidebarPanel(
-                                           selectInput('xcol', 'X Variable', vars),
-                                           selectInput('ycol', 'Y Variable', vars, selected = vars[[2]]),
-                                           numericInput('clusters', 'Cluster count', 3, min = 1, max = 9)
-                                         ),
-                                         mainPanel(
-                                           plotOutput('plot1')
-                                         )
-                                       ),
+
+
+
 
 
 
