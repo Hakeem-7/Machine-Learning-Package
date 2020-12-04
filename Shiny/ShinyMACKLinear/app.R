@@ -73,7 +73,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
          tags$img(src='Akeem.png', height = 160, width = 160),
          tags$ul("Creator", "Author" = "font-size:25px"),
          
-         h2(a("Cary Burdick", href="https://github.com/clb00635", target="_blank"),style = "font-size:25px"),
+         h2(a("Cary Burdick", href="https://github.com/clb0063", target="_blank"),style = "font-size:25px"),
          tags$img(src='Cary.png', height = 160, width = 160),
          tags$ul("Author",style = "font-size:25px"),
         
