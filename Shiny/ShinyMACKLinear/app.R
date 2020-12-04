@@ -155,14 +155,12 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                          # Show a plot:
                                          mainPanel(
                                            plotOutput("FinalPlot")
+
+
                                          )
                                        )
-                              ),
+                              )
 
-
-
-         hr(),
-         br(),
 
 
 
