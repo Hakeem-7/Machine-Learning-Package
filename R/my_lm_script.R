@@ -28,35 +28,35 @@
 #'
 #' my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, alpha = 0.05, method = "asymptotic")
 my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercept=1) {
-
+  
   # Putting the data in a matrix format
   response <- as.matrix(response)
   covariates <- as.matrix(covariates)
-
+  
   # Check to see if they are of the same row length
   if(nrow(response) != nrow(covariates))
     stop('The number of rows of the response and predictor variables must be equal.')
-
+  
   # Check to see if alpha is between 0 and 1
   if(alpha >= 1 | alpha <= 0)
     stop('True value of alpha must lie between 0 and 1')
-
+  
   # Produce a warning if alpha is greater than 0.1 (i.e is lower than 90% confidence interval)
   if(alpha > 0.1)
     warning('Alpha is typically between 0.01 and 0.1. Consider using a different alpha value')
-
+  
   # Check to see if appropriate method has been listed
   if(method != "asymptotic" & method != "a" & method != "bootstrap" & method != "b")
     stop('Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".')
-
+  
   # Check to make sure either 1 or -1 specified for intercept
   if(intercept != 1 & intercept != -1)
     stop('Enter a value of 1 if the model should estimate the intercept or -1 otherwise')
-
+  
   # Check if response variable has more than one column
   if(dim(response)[2] > 1)
     stop('Only one response variable may be used.')
-
+  
   # Define parameters and calculate statistics with and without intercept
   if(intercept==1){
     # Parameters with intercept
@@ -69,7 +69,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
     dfe <- n - p
     j <- matrix(1, nrow=n, ncol=n)
     one <- rep(1, n)
-
+    
     # Statistics with intercept
     beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
     resid <- response - covariates%*%as.matrix(beta.hat)
@@ -84,11 +84,11 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
     mse <- sse/dfe
     f.stat <- msm/mse
     p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
-
+    
     # Setting up the y table
     y.table <- cbind(response, y.hat, resid)
-    colnames(y.table) <- c('actual_y_values','predicted_y_values','residuals')
-
+    colnames(y.table) <- c('actual.y.values','predicted.y.values','residuals')
+    
     # Setting up names of rows for beta table
     row_names <- NULL
     for(i in 0:(length(beta.hat)-1)) {
@@ -106,7 +106,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
     dfe <- n - p
     j <- matrix(1, nrow=n, ncol=n)
     one <- rep(1, n)
-
+    
     # Statistics without intercept
     beta.hat <- solve(t(covariates)%*%covariates)%*%t(covariates)%*%response
     resid <- response - covariates%*%as.matrix(beta.hat)
@@ -121,7 +121,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
     mse <- sse/dfe
     f.stat <- msm/mse
     p.value <- pf(f.stat, dfm, dfe, lower.tail=FALSE)
-
+    
     # Setting up names of rows for beta table
     row_names <- NULL
     for(i in 1:length(beta.hat)) {
@@ -129,18 +129,18 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
       row_names <- append(row_names, iter_rows)
     }
   }
-
+  
   # More beta table preparation
   rownames(beta.hat) <- row_names
   rownames(var.beta) <- row_names
-
+  
   # Setting up the y table
   y.table <- cbind(response, y.hat, resid)
-  colnames(y.table) <- c('actual y values','predicted y values','residuals')
-
+  colnames(y.table) <- c('actual.y.values','y.hat','residuals')
+  
   # Defining parameter for confidence interval based on specified alpha
   quant <- 1 - alpha/2
-
+  
   # Change CI calculation based on specified method
   if(tolower(method) == "asymptotic" | tolower(method) == "a"){
     iter = length(beta.hat)
@@ -167,19 +167,18 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
       ci.beta <- rbind(ci.beta, ci.list)
     }
   }
-
+  
   # Setting up the beta table
   rownames(ci.beta) <- row_names
   beta.table <- cbind(beta.hat, var.beta, ci.beta)
-  colnames(beta.table) <- c('beta hat','variance of beta hat','CI lower bound','CI upper bound')
-
+  colnames(beta.table) <- c('beta.hat','var.beta','CI.lower.bound','CI.upper.bound')
+  
   #invisible(y.hat=y.hat)
-
-  return(list(beta = beta.hat, sigma2 = sigma2.hat,
-              variance_beta = var.beta, ci = ci.beta, mspe = mspe,
+  
+  return(list(sigma2 = sigma2.hat,
+              ci = ci.beta, mspe = mspe,
               ssm = ssm, sse = sse, f.stat = f.stat, p.value = p.value,
-              y.hat = y.hat, residuals = resid, y.table = y.table,
-              beta.table = beta.table))
+              y.table = y.table, beta.table = beta.table))
 }
 
 
@@ -198,12 +197,13 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
 #' @export
 
 plot_func <- function(lm){
-  plot(lm$y.hat, lm$residual)
-
-  qqnorm(lm$residual)
-  qqline(lm$residual, col = "red", lwd = 2)
-
-  hist(lm$residual)
-
+  plot(lm$y.table[,2], lm$y.table[,3], main="Residuals vs. Fitted Values (y.hat)",
+       xlab="Residuals", ylab="Fitted Values (y.hat)")
+  
+  qqnorm(lm$y.table[,3], main="Normal Q-Q Plot of Residuals")
+  qqline(lm$y.table[,3], col = "red", lwd = 2)
+  
+  hist(lm$y.table[,3], main="Histogram of Residuals", xlab="Residual Values")
+  
 }
 
