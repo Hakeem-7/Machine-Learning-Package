@@ -1,85 +1,68 @@
+---
+title: "Final Project, STAT 6210"
+date: "12/04/2020"
+output: 
+  html_document:
+    keep_md: true
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
 
 # macklinear
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
-The goal of this project is to develop an R package that implements a
-foundational machine learning algorithm - linear regression. The scope
-of the package includes producing outputs such as statistical confidence
-intervals (C.I.) at the user selected significance level and method of
-solution. The two methods of solution available in the developed package
-are the asymptotic and the bootstrap methods.
+The goal of this project is to develop an R package that implements a foundational machine learning algorithm - linear regression. The scope of the package includes producing outputs such as statistical confidence intervals (C.I.) at the user selected significance level and method of solution. The two methods of solution available in the developed package are the asymptotic and the bootstrap methods.
 
-You can also check our Shiny app using this link: [Shiny
-App](https://finalprojectgroup5.shinyapps.io/shinymacklinear/)
+You can also check our Shiny app using this link:
+[Shiny App](https://finalprojectgroup5.shinyapps.io/shinymacklinear/)
 
 ## Installation
 
-1.  Download and install/update R.
+1. Download and install/update R.
 
-2.  Open R and install the development version of the package from
-    [GitHub](https://github.com/) with:
+2. Open R and install the development version of the package from [GitHub](https://github.com/) with:
 
-<!-- end list -->
 
-``` install_github
+```install_github
 # install.packages("devtools")
 devtools::install_github("AU-R-Programming/Final_Project_Group_5")
 ```
 
 ## Usage
 
-There are two functions contained in the package: `my_lm()` for building
-a linear regression model and outputting related statistics, and
-`plot_func()` for creating plots of some of these statistics from linear
-regression. The full form of each function with each argument and
-default value, if any, is listed below:
+There are two functions contained in the package: `my_lm()` for building a linear regression model and outputting related statistics, and `plot_func()` for creating plots of some of these statistics from linear regression. The full form of each function with each argument and default value, if any, is listed below:
 
-``` r
+
+```r
 my_lm(response, covariates, alpha = 0.05, method = "asymptotic", intercept = 1)
 
 plot_func(lm)
 ```
 
-The function `my_lm()` needs five parameters: `response`, `covariates`,
-`alpha`, `method`, & `intercept`.
+The function `my_lm()` needs five parameters: 
+`response`, `covariates`, `alpha`, `method`, & `intercept`.
 
-  - `response` - a one-dimensional vector of numerical y values used as
-    the response variable in the regression equation.
-  - `covariates` - a matrix of numerical x values used as the
-    explanatory variable(s) in the regression equation. Can be
-    one-dimensional if running simple linear regression or
-    two-dimensional if running multiple linear regression.
-  - `alpha` - a value between 0 and 1 that specifies the alpha level
-    with which to form the two-tailed confidence interval for beta.hat.
-    The default value is 0.05.
-  - `method` - a string value indicating the method used for generating
-    the confidence intervals for beta.hat. The asymptotic method will be
-    performed if “asymptotic” or “a” are specified. The bootstrap method
-    will be performed if “bootstrap” or “b” are specified. The default
-    value is “asymptotic”.
-  - `intercept` - a binary value of either 1 or -1 specifying if the
-    model should estimate the intercept. A value of 1 will include the
-    intercept while -1 will exclude the intercept. The default value is
-    1.
+- `response` - a one-dimensional vector of numerical y values used as the response variable in the regression equation.
+- `covariates` - a matrix of numerical x values used as the explanatory variable(s) in the regression equation. Can be one-dimensional if running simple linear regression or two-dimensional if running multiple linear regression.
+- `alpha` - a value between 0 and 1 that specifies the alpha level with which to form the two-tailed confidence interval for beta.hat. The default value is 0.05.
+- `method` - a string value indicating the method used for generating the confidence intervals for beta.hat. The asymptotic method will be performed if "asymptotic" or "a" are specified. The bootstrap method will be performed if "bootstrap" or "b" are specified. The default value is "asymptotic".
+- `intercept` - a binary value of either 1 or -1 specifying if the model should estimate the intercept. A value of 1 will include the intercept while -1 will exclude the intercept. The default value is 1.
 
 <br><br><br>
 
 ## Tutorial - Simple Linear Regression
+### Cars Dataset 
 
-### Cars Dataset
+This is a basic example using the base R data set, cars, which shows you how to solve a common problem.
+<br><br><br>
+The cars data set has two variables, **speed** and **distance**. We will use the `my_lm` function of the `macklinear` package to fit a regression and estimate the fit of our explanatory variable to our response variable.
+<br><br><br>
 
-This is a basic example using the base R data set, cars, which shows you
-how to solve a common problem. <br><br><br> The cars data set has two
-variables, **speed** and **distance**. We will use the `my_lm` function
-of the `macklinear` package to fit a regression and estimate the fit of
-our explanatory variable to our response variable. <br><br><br>
-
-``` r
+```r
 library(macklinear)
 
 head(cars)
@@ -96,37 +79,21 @@ plot(cars)
 
 <img src="man/figures/README-example cars-1.png" width="100%" />
 
-<br><br><br> We can see that the y variable, or the response variable,
-is distance. The variable **“dist”** is our `response` parameter in our
-function. <br><br><br> The x variable, or the explanatory variable, is
-speed. The variable **“speed”** is our `covariate` parameter in our
-function. <br><br><br> `Alpha` is our level of significance set for our
-function. Alpha is generally set at 0.05, indicating a 95% confidence
-interval. If you do not set 0 \< alpha \< 1, you will have a warning
-generated as the true value of alpha must be between 0 and 1 and the
-function will not complete. Additionally, if you do not set 0.01 \<
-alpha \< 0.1, you will have a warning generated, but the function will
-still run as intended. Alpha is typically between 0.01 and 0.1,
-therefore you should consider using a different alpha value.
-<br><br><br> The parameter `method` is used to determine the method with
-which confidence intervals for β will be generated. You can choose to
-use a “bootstrap” or “asymptotic” method for generating confidence
-intervals. The “asymptotic” method is a more mathematical approach using
-the square root of the variance of each β to construct a confidence
-interval. The “bootstrap” method simply generates a new matrix of x and
-y values with the same length of the original data by sampling with
-replacement from the original data. This is repeated 1000 times. The βs
-are estimated for each of the 1000 new datasets, and the confidence
-intervals are constructed by taking the upper and lower quantiles of the
-distribution of these βs. The quantiles are specified by `alpha`.
-<br><br><br> The final parameter of the function is `intercept`. As
-stated before, this determines whether to include an intercept in the
-model or not. <br><br><br> We will now use the `my_lm()` function to
-analyze the relationship between **speed and distance**, with a **95%**
-confidence interval and a **bootstrap** approach for generating
-confidence interval, and including the intercept.
+<br><br><br>
+We can see that the y variable, or the response variable, is distance. The variable **"dist"** is our `response` parameter in our function. 
+<br><br><br>
+The x variable, or the explanatory variable, is speed. The variable **"speed"** is our `covariate` parameter in our function. 
+<br><br><br>
+`Alpha` is our level of significance set for our function. Alpha is generally set at 0.05, indicating a 95% confidence interval. If you do not set 0 < alpha < 1, you will have a warning generated as the true value of alpha must be between 0 and 1 and the function will not complete. Additionally, if you do not set 0.01 < alpha < 0.1, you will have a warning generated, but the function will still run as intended. Alpha is typically between 0.01 and 0.1, therefore you should consider using a different alpha value. 
+<br><br><br>
+The parameter `method` is used to determine the method with which confidence intervals for β will be generated. You can choose to use a "bootstrap" or "asymptotic" method for generating confidence intervals. The "asymptotic" method is a more mathematical approach using the square root of the variance of each β to construct a confidence interval. The "bootstrap" method simply generates a new matrix of x and y values with the same length of the original data by sampling with replacement from the original data. This is repeated 1000 times. The βs are estimated for each of the 1000 new datasets, and the confidence intervals are constructed by taking the upper and lower quantiles of the distribution of these βs. The quantiles are specified by `alpha`.
+<br><br><br>
+The final parameter of the function is `intercept`. As stated before, this determines whether to include an intercept in the model or not.
+<br><br><br>
+We will now use the `my_lm()` function to analyze the relationship between **speed and distance**, with a **95%** confidence interval and a **bootstrap** approach for generating confidence interval, and including the intercept. 
 
-``` r
+
+```r
 fit_my_lm <- my_lm(cars$dist, cars$speed, alpha = 0.05, method = "bootstrap", intercept = 1)
 fit_my_lm
 #> $y.avg
@@ -212,63 +179,47 @@ fit_my_lm
 #> 
 #> $beta.table
 #>          beta variance.beta CI.lower.bound CI.upper.bound
-#> b0 -17.579095    45.6765135     -28.692910      -6.287511
-#> b1   3.932409     0.1726509       3.137822       4.721378
+#> b0 -17.579095    45.6765135     -30.117420      -6.452335
+#> b1   3.932409     0.1726509       3.133241       4.775545
 ```
+Our function returns multiple statistical outputs regarding the relationship between our x and y variables, **speed** and **distance**. 
 
-Our function returns multiple statistical outputs regarding the
-relationship between our x and y variables, **speed** and **distance**.
+- `y.avg` is the mean of all y-values in the data set
+- `sigma2` is an estimate of the residual variance
+- `mspe` is an estimate of how well the model predicts the response variable
+- `ssm` is the model sum of squares
+- `sse` is the error sum of squares, which quantifies how much the residual data points vary around the estimated regression line points, y-hat
+- `f.stat` is the f statistic for use in f test and model fitting
+- `p.value` is the probability of the observed data, or data more extreme, given the null hypothesis is true
 
-  - `y.avg` is the mean of all y-values in the data set
-  - `sigma2` is an estimate of the residual variance
-  - `mspe` is an estimate of how well the model predicts the response
-    variable
-  - `ssm` is the model sum of squares
-  - `sse` is the error sum of squares, which quantifies how much the
-    residual data points vary around the estimated regression line
-    points, y-hat
-  - `f.stat` is the f statistic for use in f test and model fitting
-  - `p.value` is the probability of the observed data, or data more
-    extreme, given the null hypothesis is true
+There are two tables that are also output with additional information. From the output `y.table`:
 
-There are two tables that are also output with additional information.
-From the output `y.table`:
-
-  - `actual.y.values` are the response variable values taken from the
-    input data
-  - `y.hat` is the predicted y-value
-  - `residual` is the difference between the observed y-value and the
-    predicted y-value, or y.hat
+- `actual.y.values` are the response variable values taken from the input data
+- `y.hat` is the predicted y-value
+- `residual` is the difference between the observed y-value and the predicted y-value, or y.hat
 
 From the output `beta.table`:
 
-  - `beta` is the estimated value of beta-hat
-  - `variance.beta` is an estimate of the variance of the estimated beta
-  - `CI.lower.bound` is the lower bound of the confidence interval based
-    on the alpha set in the function parameters
-  - `CI.upper.bound` is the upper bound of the confidence interval based
-    on the alpha set in the function parameters <br><br><br> For every 1
-    unit increase in speed, there is a *3.932409 (beta)* *(+/- 0.743139
-    95% CI)* unit increase in distance. <br><br> Our **p-value** is
-    1.489836e-12, which indicates that there is a significant
-    relationship between our descriptive and response variables.
-    <br><br><br> We can also produce descriptive plot of our residuals
-    using `plot_func()`. The parameter needed in `plot_func()` is the
-    name of the object created when using the `my_lm()` function.
-    <br><br> In the example above we called our object `fit_my_lm` - so
-    this is what will be used as the parameter in `plot_func()`.
-    <br><br> `plot_func()` will return 3 plots:
+- `beta` is the estimated value of beta-hat
+- `variance.beta` is an estimate of the variance of the estimated beta
+- `CI.lower.bound` is the lower bound of the confidence interval based on the alpha set in the function parameters
+- `CI.upper.bound` is the upper bound of the confidence interval based on the alpha set in the function parameters
+<br><br><br>
+For every 1 unit increase in speed, there is a *3.932409 (beta)* *(+/- 0.743139 95% CI)* unit increase in distance. 
+<br><br>
+Our **p-value** is 1.489836e-12, which indicates that there is a significant relationship between our descriptive and response variables. 
+<br><br><br>
+We can also produce descriptive plot of our residuals using `plot_func()`. The parameter needed in `plot_func()` is the name of the object created when using the `my_lm()` function. 
+<br><br>
+In the example above we called our object `fit_my_lm` - so this is what will be used as the parameter in `plot_func()`. 
+<br><br>
+`plot_func()` will return 3 plots: 
+1. A plot of the estimated residual values versus the estimated fitted values
+2. A qq-plot plotting estimated residual values, with a fitted line
+3. A histogram of the estimated residual values
+<br><br><br>
 
-<!-- end list -->
-
-1.  A plot of the estimated residual values versus the estimated fitted
-    values
-2.  A qq-plot plotting estimated residual values, with a fitted line
-3.  A histogram of the estimated residual values <br><br><br>
-
-<!-- end list -->
-
-``` r
+```r
 my_plots <- plot_func(fit_my_lm)
 ```
 
@@ -276,16 +227,12 @@ my_plots <- plot_func(fit_my_lm)
 <br><br><br>
 
 ## Tutorial - Multiple Regression
+### Iris Dataset 
 
-### Iris Dataset
-
-We can also use the `my_lm()` function to perform multiple linear
-regression. Compared to simple linear regressions, performed in the
-example above, multiple linear regressions are used to predict the value
-of the response variable when two or more covariates are present.
+We can also use the `my_lm()` function to perform multiple linear regression. Compared to simple linear regressions, performed in the example above, multiple linear regressions are used to predict the value of the response variable when two or more covariates are present. 
 <br><br><br>
 
-``` r
+```r
 library(macklinear)
 
 head(iris)
@@ -303,18 +250,14 @@ plot(iris)
 <img src="man/figures/README-example iris-1.png" width="100%" />
 <br><br><br>
 
-There are four continuous variables in the iris data set that can be
-used for multiple regression: **sepal length, sepal width, petal
-length**, and **petal width**.
+There are four continuous variables in the iris data set that can be used for multiple regression: **sepal length, sepal width, petal length**, and **petal width**. 
 
-Using our `my_lm()` function, we want to see if our covariates sepal
-length and sepal width can explain the relationship in our response
-variable, petal length.
+Using our `my_lm()` function, we want to see if our covariates sepal length and sepal width can explain the relationship in our response variable, petal length. 
 
-We will use a **90% confidence interval** and, the **asymptotic** method
-for the confidence interval, and no intercept. <br><br><br>
+We will use a **90% confidence interval** and, the **asymptotic** method for the confidence interval, and no intercept. 
+<br><br><br>
 
-``` r
+```r
 iris.response <- iris$Petal.Length
 iris.covariates <- cbind(iris$Sepal.Length, iris$Sepal.Width)
 iris_results <- my_lm(iris.response, iris.covariates, alpha = 0.1, method = "asymptotic", intercept = -1)
@@ -505,16 +448,13 @@ iris_results
 #> b1  1.560301   0.002076776       1.485342       1.635260
 #> b2 -1.745704   0.007584428      -1.888952      -1.602456
 ```
+<br><br><br>
+From the output, we no longer have the estimate for the intercept, or "b0". However, now that we have added an additional x value, there now exists a "b1" and a "b2".
 
-<br><br><br> From the output, we no longer have the estimate for the
-intercept, or “b0”. However, now that we have added an additional x
-value, there now exists a “b1” and a “b2”.
-
-To get our descriptive plots, we can use `plot_func()` with the
-parameter again the object we called our `my_lm()` function.
+To get our descriptive plots, we can use `plot_func()` with the parameter again the object we called our `my_lm()` function.
 <br><br><br>
 
-``` r
+```r
 iris_plots <- plot_func(iris_results)
 ```
 
@@ -523,30 +463,23 @@ iris_plots <- plot_func(iris_results)
 
 ## Error Messages and Constraints
 
-There are a few checks built into the function to make sure the
-regressions are performed accurately. For example, as mentioned before,
-the function will not run if the `alpha` value is less than 0 or greater
-than 1. An example of the error output in this situation is below:
+There are a few checks built into the function to make sure the regressions are performed accurately. For example, as mentioned before, the function will not run if the `alpha` value is less than 0 or greater than 1. An example of the error output in this situation is below:
 
-``` r
+```r
 iris_results <- my_lm(iris$Petal.Length, iris$Petal.Width, alpha = 2, method = "asymptotic", intercept = 1)
 #> Error in my_lm(iris$Petal.Length, iris$Petal.Width, alpha = 2, method = "asymptotic", : True value of alpha must lie between 0 and 1
 ```
 
-Another potential error message a user can encounter is when entering
-the method for generating the confidence interval. If the user enters a
-method that is unknown, the function will not run:
+Another potential error message a user can encounter is when entering the method for generating the confidence interval. If the user enters a method that is unknown, the function will not run:
 
-``` r
+```r
 iris_results <- my_lm(iris$Petal.Length, iris$Petal.Width, alpha = 0.05, method = "unbiased", intercept = 1)
 #> Error in my_lm(iris$Petal.Length, iris$Petal.Width, alpha = 0.05, method = "unbiased", : Unrecognized confidence interval method. Try "asymptotic" or "bootstrap".
 ```
 
-Additionally, there is one warning that will appear pertaining to
-`alpha` again, but it will not halt the function. As mentioned earlier,
-a warning will be produced if the `alpha` value is an uncommon value:
+Additionally, there is one warning that will appear pertaining to `alpha` again, but it will not halt the function. As mentioned earlier, a warning will be produced if the `alpha` value is an uncommon value:
 
-``` r
+```r
 iris_results <- my_lm(iris$Petal.Length, iris$Petal.Width, alpha = 0.4, method = "a", intercept = 1)
 #> Warning in my_lm(iris$Petal.Length, iris$Petal.Width, alpha = 0.4, method =
 #> "a", : Alpha is typically between 0.01 and 0.1. Consider using a different alpha
