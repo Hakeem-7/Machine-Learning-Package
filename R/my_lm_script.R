@@ -136,7 +136,7 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
 
   # Setting up the y table
   y.table <- cbind(response, y.hat, resid)
-  colnames(y.table) <- c('actual.y.values','y.hat','residuals')
+  colnames(y.table) <- c('actual.y.values','y.hat','residual')
 
   # Defining parameter for confidence interval based on specified alpha
   quant <- 1 - alpha/2
@@ -171,14 +171,13 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
   # Setting up the beta table
   rownames(ci.beta) <- row_names
   beta.table <- cbind(beta.hat, var.beta, ci.beta)
-  colnames(beta.table) <- c('beta.hat','var.beta','CI.lower.bound','CI.upper.bound')
+  colnames(beta.table) <- c('beta','variance.beta','CI.lower.bound','CI.upper.bound')
 
   #invisible(y.hat=y.hat)
 
-  return(list(sigma2 = sigma2.hat,
-              ci = ci.beta, mspe = mspe,
-              ssm = ssm, sse = sse, f.stat = f.stat, p.value = p.value,
-              y.table = y.table, beta.table = beta.table))
+  return(list(y.avg = y.avg, sigma2 = sigma2.hat,
+              mspe = mspe, ssm = ssm, sse = sse, f.stat = f.stat,
+              p.value = p.value, y.table = y.table, beta.table = beta.table))
 }
 
 
