@@ -25,7 +25,13 @@
 #' @importFrom stats runif
 #' @export
 #' @examples
-#'
+#' 
+#' data(iris)
+#' 
+#' simple regression 
+#' my_lm(iris$Sepal.Length, iris$Sepal.Width, alpha = 0.05, method = "bootstrap")
+#' 
+#' multiple regression 
 #' my_lm(iris$Sepal.Length + iris$Sepal.Width, iris$Petal.Length, alpha = 0.05, method = "asymptotic")
 my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercept=1) {
 
@@ -194,6 +200,12 @@ my_lm = function(response, covariates, alpha=0.05, method="asymptotic", intercep
 #' @author Akeem Ajede and Cary Burdick and Kaelyn Fogelman and Maria Tereza
 #' @importFrom stats runif
 #' @export
+#' @examples 
+#' 
+#' data(iris)
+#' 
+#' fit_my_lm <- my_lm(iris$Sepal.Length, iris$Sepal.Width, alpha = 0.05, method = "bootstrap")
+#' plot_func(fit_my_lm)
 
 plot_func <- function(lm){
   plot(lm$y.table[,2], lm$y.table[,3], main="Residuals vs. Fitted Values (y.hat)",
