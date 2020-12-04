@@ -15,11 +15,6 @@ library(shinyjs)
 library(rsconnect)
 library(macklinear)
 
-#DATA
-data("cars")
-n = 300
-mydata <- cars
-y <- mydata$dist
 
 
 # Define UI
@@ -157,6 +152,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
                                            plotOutput("FinalPlot")
 
 
+
                                          )
                                        )
                               )
@@ -171,6 +167,12 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 )
 )
 
+
+
+# Data:
+n = 50
+mydata <- cars
+y <- mydata$dist
 
 
 
