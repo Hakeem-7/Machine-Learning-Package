@@ -171,6 +171,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 
 # Data:
 n = 50
+source("cars.R")
 mydata <- cars
 y <- mydata$dist
 
@@ -181,14 +182,14 @@ y <- mydata$dist
 server <- function(input, output) {
 
 
-    fit_my_lm <- my_lm(mydata$dist,myData,
-                       alpha = input$alpha, method = input$method,
-                       intercept = 1)
+  fit_my_lm <- my_lm(mydata$dist,mydata$speed,
+                     alpha = input$alpha, method = input$method,
+                     intercept = 1)
 
 
-    output$FinalPlot = renderPlot({
-      plot(fit_my_lm)
-    })
+  output$FinalPlot = renderPlot({
+    plot(fit_my_lm)
+  })
 
 
 
