@@ -7,7 +7,6 @@
 #    http://shiny.rstudio.com/
 #
 
-devtools::install_github("AU-R-Programming/Final_Project_Group_5")
 # Load R packages
 library(shiny)
 library(shinythemes)
