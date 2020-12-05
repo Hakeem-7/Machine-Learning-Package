@@ -1,6 +1,7 @@
 ---
 title: "Final Project, STAT 6210"
 date: "12/04/2020"
+author: "Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Terra"
 output: 
   html_document:
     keep_md: true
@@ -31,7 +32,7 @@ You can also check our Shiny app using this link:
 
 1. Download and install/update R.
 
-2. Open R and install the development version of the package from [GitHub](https://github.com/) with:
+2. Open R and install the development version of the package from [GitHub](https://github.com/AU-R-Programming/Final_Project_Group_5) with:
 
 ```{install_github, warning=FALSE}
 # install.packages("devtools")

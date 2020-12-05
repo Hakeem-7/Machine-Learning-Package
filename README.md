@@ -1,6 +1,7 @@
 ---
 title: "Final Project, STAT 6210"
 date: "12/04/2020"
+author: "Akeem Ajede, Cary Burdick, Kaelyn Fogelman, Maria Terra"
 output: 
   html_document:
     keep_md: true
@@ -24,7 +25,7 @@ You can also check our Shiny app using this link:
 
 1. Download and install/update R.
 
-2. Open R and install the development version of the package from [GitHub](https://github.com/) with:
+2. Open R and install the development version of the package from [GitHub](https://github.com/AU-R-Programming/Final_Project_Group_5) with:
 
 
 ```install_github
@@ -179,8 +180,8 @@ fit_my_lm
 #> 
 #> $beta.table
 #>          beta variance.beta CI.lower.bound CI.upper.bound
-#> b0 -17.579095    45.6765135     -30.117420      -6.452335
-#> b1   3.932409     0.1726509       3.133241       4.775545
+#> b0 -17.579095    45.6765135     -28.668361      -7.206055
+#> b1   3.932409     0.1726509       3.173559       4.709085
 ```
 Our function returns multiple statistical outputs regarding the relationship between our x and y variables, **speed** and **distance**. 
 
