@@ -370,13 +370,14 @@ summary {
 </div>
 
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<p>GitHub Repo: Final_Project_Group_5 <!-- README.md is generated from README.Rmd. Please edit that file --></p>
 <div id="macklinear" class="section level1">
 <h1>macklinear</h1>
 <!-- badges: start -->
 <!-- badges: end -->
 <p>The goal of this project is to develop an R package that implements a foundational machine learning algorithm - linear regression. The scope of the package includes producing outputs such as statistical confidence intervals (C.I.) at the user selected significance level and method of solution. The two methods of solution available in the developed package are the asymptotic and the bootstrap methods.</p>
 <p>You can also check our Shiny app using this link: <a href="https://finalprojectgroup5.shinyapps.io/shinymacklinear/">Shiny App</a></p>
+<p><br></p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <ol style="list-style-type: decimal">
@@ -384,7 +385,14 @@ summary {
 <li><p>Open R and install the development version of the package from <a href="https://github.com/AU-R-Programming/Final_Project_Group_5">GitHub</a> with:</p></li>
 </ol>
 <pre class="install_github"><code># install.packages(&quot;devtools&quot;)
-devtools::install_github(&quot;AU-R-Programming/Final_Project_Group_5&quot;)</code></pre>
+devtools::install_github(&quot;AU-R-Programming/Final_Project_Group_5&quot;)
+library(macklinear)</code></pre>
+<p><br></p>
+<p>The following vignette will walk you through some examples of how to use the functions and obtain their output. To get even more information about the two functions and the package itself while using them yourself in R, run these to see their help pages after installation:</p>
+<pre class="help_functions"><code>?my_lm
+?plot_func
+help(package = macklinear)</code></pre>
+<p><br><br><br></p>
 </div>
 <div id="usage" class="section level2">
 <h2>Usage</h2>
@@ -506,8 +514,8 @@ fit_my_lm
 #&gt; 
 #&gt; $beta.table
 #&gt;          beta variance.beta CI.lower.bound CI.upper.bound
-#&gt; b0 -17.579095    45.6765135     -28.668361      -7.206055
-#&gt; b1   3.932409     0.1726509       3.173559       4.709085</code></pre>
+#&gt; b0 -17.579095    45.6765135     -28.921314      -6.798130
+#&gt; b1   3.932409     0.1726509       3.122158       4.707382</code></pre>
 <p>Our function returns multiple statistical outputs regarding the relationship between our x and y variables, <strong>speed</strong> and <strong>distance</strong>.</p>
 <ul>
 <li><code>y.avg</code> is the mean of all y-values in the data set</li>

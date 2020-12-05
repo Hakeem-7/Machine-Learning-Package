@@ -6,7 +6,7 @@ output:
   html_document:
     keep_md: true
 ---
-
+GitHub Repo: Final_Project_Group_5
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
@@ -21,6 +21,8 @@ The goal of this project is to develop an R package that implements a foundation
 You can also check our Shiny app using this link:
 [Shiny App](https://finalprojectgroup5.shinyapps.io/shinymacklinear/)
 
+<br>
+
 ## Installation
 
 1. Download and install/update R.
@@ -31,10 +33,22 @@ You can also check our Shiny app using this link:
 ```install_github
 # install.packages("devtools")
 devtools::install_github("AU-R-Programming/Final_Project_Group_5")
+library(macklinear)
 ```
 
-## Usage
+<br>
 
+The following vignette will walk you through some examples of how to use the functions and obtain their output. To get even more information about the two functions and the package itself while using them yourself in R, run these to see their help pages after installation:
+
+```help_functions
+?my_lm
+?plot_func
+help(package = macklinear)
+```
+
+<br><br><br>
+
+## Usage
 There are two functions contained in the package: `my_lm()` for building a linear regression model and outputting related statistics, and `plot_func()` for creating plots of some of these statistics from linear regression. The full form of each function with each argument and default value, if any, is listed below:
 
 
@@ -180,8 +194,8 @@ fit_my_lm
 #> 
 #> $beta.table
 #>          beta variance.beta CI.lower.bound CI.upper.bound
-#> b0 -17.579095    45.6765135     -28.668361      -7.206055
-#> b1   3.932409     0.1726509       3.173559       4.709085
+#> b0 -17.579095    45.6765135     -28.921314      -6.798130
+#> b1   3.932409     0.1726509       3.122158       4.707382
 ```
 Our function returns multiple statistical outputs regarding the relationship between our x and y variables, **speed** and **distance**. 
 
