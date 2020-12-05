@@ -7,6 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 
+devtools::install_github("AU-R-Programming/Final_Project_Group_5")
 # Load R packages
 library(shiny)
 library(shinythemes)
@@ -37,8 +38,8 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 
                                 h1("Our package"),
                                 em("The package must contain:"),
-                                tags$li("Confidence intervals: the user must be able to choose the significance level  \\(\\alpha\\) to obtain for the 1-\\(\\alpha\\)
-                                confidence intervals for  \\(\\alpha\\) and whether,to use the asymptotic or bootstrap approach for this."),
+                                tags$li("Confidence intervals: the user must be able to choose the significance level  alpha to obtain for the 1-alpha
+                                confidence intervals for  alpha and whether,to use the asymptotic or bootstrap approach for this."),
                                 tags$li("Plots including:",
                                   tags$ul("- Residuals vs fitted-values"),
                                   tags$ul("- qq-plot of residuals"),
@@ -127,7 +128,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 
                               tabPanel("Let's give a try", style="text-align:justify;",style = "border: 4px double grey;",
 
-                                       h2("Loading"),
+                                       h2("We Tried ¯\\_(ツ)_/¯"),
 
 
                                        sidebarLayout(
@@ -171,25 +172,28 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
 
 # Data:
 n = 50
-source("cars.R")
-mydata <- cars
-y <- mydata$dist
-
+#source("cars.Rdata")
+#mydata <- cars
+#y <- mydata$dist
+y <- runif(100, 0, 10)
+x <- runif(100, 20, 30)
 
 
 
 # Define server function
 server <- function(input, output) {
 
-
-  fit_my_lm <- my_lm(mydata$dist,mydata$speed,
-                     alpha = input$alpha, method = input$method,
-                     intercept = 1)
-
-
-  output$FinalPlot = renderPlot({
-    plot(fit_my_lm)
+  fit_my_lm <- reactive({
+    fit_my_lm <- my_lm(y,x,
+                      alpha = 0.05, method = "a",
+                      intercept = 1)
   })
+  output$FinalPlot = renderPlot({
+    qqnorm(x, main="Normal Q-Q Plot of X Values")
+    qqline(x, col = "red", lwd = 2)
+  })
+
+
 
 
 
